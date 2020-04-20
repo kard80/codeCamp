@@ -1,0 +1,24 @@
+.container {
+    border: solid 1px;
+    padding: 10px 0 10px 0;
+    width: 40%;
+    margin: auto;
+}
+
+.firstDiv {
+    border: dotted;
+    width: 80%;
+    margin: auto;
+    background-color: #345543;
+    color: white;
+}
+
+.firstDiv + Div {
+    border: solid 1px;
+    width: 80%;
+    margin: 10px auto 10px auto;
+}
+
+ul {
+    text-align: left;
+}
