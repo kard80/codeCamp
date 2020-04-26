@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         }
     })
-    leave.associate = models => {
-        leave.hasOne(models.person, {foreignKey: "personId"})
+    timeAttendance.associate = models => {
+        timeAttendance.belongsTo(models.person, {foreignKey: "personId"})
     }
 
     return timeAttendance

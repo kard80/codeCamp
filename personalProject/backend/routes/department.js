@@ -1,43 +1,48 @@
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 const db = require('../models');
 
 
 router.get('/', (req, res) => {
-    db.findAll();
+    db.department.findAll()
+        .then(result => {
+            res.status(200).send(result)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
 })
 
 router.post('/', (req, res) => {
-    const variable = req.body.post
-    db.person.create({
-        data: data
+    const department = req.body.department
+    db.department.create({
+        department: department
     })
-    
-    .then(result => {
-        res.status(200).send(result)
-    }).catch(err => {
-        res.status(400).send(err)
-    })
+        .then(result => {
+            res.status(200).send(result)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
 })
 
-router.put('/', (req,res) => {
-    const variable = req.body.edit;
+router.put('/', (req, res) => {
+    const department = req.body.department;
     const id = req.body.id
-    db.department.update({data: data}, {where: {id: id}}).then(result => {
-        res.status(200).send(result)
-    }).catch(err => {
-        res.status(400).send(err)
-    })
+    db.department.update({ department: department }, { where: { id: id } })
+        .then(result => {
+            res.status(200).send(result)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
 })
 
-router.delete('/', (req,res) => {
-    const id = req.params.id;
-    db.person.destroy({where: {id: id}}).then(result => {
-        res.status(200).send(result);
-    }).catch(err => {
-        res.status(400).send(err)
-    })
-
+router.delete('/', (req, res) => {
+    const id = req.body.id
+    db.department.destroy({ where: { id: id } })
+        .then(result => {
+            res.status(200).send(result)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
 })
 
 

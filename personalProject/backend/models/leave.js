@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         },
         endDate: {
-            type: DataTypes.Date
+            type: DataTypes.DATE
         },
         approver: {
             type: DataTypes.STRING
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
     leave.associate = models => {
-        leave.hasOne(models.id, {foreignKey: "personId"})
+        leave.belongsTo(models.person, {foreignKey: "personId"})
     }
 
     return leave

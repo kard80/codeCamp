@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         },
         probationEndDate: {
-            type: DataTypes.Date
+            type: DataTypes.DATE
         },
         jobTitle: {
             type: DataTypes.STRING
@@ -56,11 +56,11 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
     person.associate = models => {
-        person.hasOne(models.department, {foreignKey: "departmentId"})
-        person.hasOne(models.position, {foreignKey: "positionId"})
-
-        leave.belongToMany(models.person, {foreignKey: "personId"})
-        timeAttendance.belongToMany(models.person, {foreignKey: "personId"})
+        person.hasMany(models.leave, {foreignKey: "personId"})
+        person.hasMany(models.timeAttendance, {foreignKey: "personId"})
+        
+        person.belongsTo(models.position, {foreignKey: "positionId"})
+        person.belongsTo(models.department)
     }
 
     return person

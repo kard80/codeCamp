@@ -1,0 +1,27 @@
+.navBarBody {
+    width: 100%;
+    height: 48px;
+    background-color: white;
+}
+
+.container {
+    width: 97%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.containerSubClass {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.containerSubClass img{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+}
