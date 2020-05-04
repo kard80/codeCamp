@@ -1,7 +1,7 @@
 .sidebar {
     background-color: white;
     width: 150px;
-    height: 100vh;
+    height: 621px;
     position: absolute;
     margin-top: 1px;
     padding-top: 20px;
@@ -16,6 +16,10 @@
     list-style: none;
     width: 150px;
     margin-left: -40px;
+}
+
+.sidebarMain {
+    color: rgb(113, 112, 112);
 }
 
 .sidebar ul li:hover {

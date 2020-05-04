@@ -1,6 +1,7 @@
 import React, { useEffect, useState, usePrevious } from 'react'
 import { Col, Row } from 'antd'
 import '../../style/LandingPage/Login.css'
+import NavBar from './NavBar'
 
 export default function Login() {
     return (

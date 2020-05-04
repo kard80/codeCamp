@@ -19,6 +19,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-bottom: 100px;
 }
 
 .block > div:first-of-type {
@@ -28,18 +29,23 @@
     height: 40px;
 }
 
-.bar1, .bar2 {
+.cross {
+    cursor: pointer;
+    margin-top: 1px;
+}
+
+.login .bar1,.login .bar2 {
     width: 25px;
-    height: 5px;
+    height: 2px;
     background-color: #333;
     margin: 6px 0;
 }
 
-.bar1 {
+.login .bar1 {
     transform: rotate(45deg) translate(19px, -6px);
 }
 
-.bar2 {
+.login .bar2 {
     transform: rotate(-45deg) translate(-12px);
 }
 
@@ -87,10 +93,16 @@
     background-color: #169DD7;
     border-radius: 10px;
     border-color: #169DD7;
+}
+
+.buttonLogin {
     font-weight: bold;
-    color: white;
+    color:white;
     font-size: 18px;
-    
+}
+
+.buttonLogin:hover{
+    color: white;
 }
 
 .loginField p {

@@ -31,3 +31,44 @@
     padding-top: 10px;
 }
 
+.navList ul li {
+    cursor: pointer
+}
+
+.navList button {
+    color: black;
+    border-radius: 3px;
+    border-style: none;
+    width: 65px;
+    height: 30px;
+    font-size:16px;
+    outline: none;
+}
+
+.loginField button {
+    border: none;
+}
+
+.navList button:active, .cross:active {
+    position: relative;
+    top: 5px;
+}
+
+.navList button:hover, .cross:hover {
+    cursor: pointer;
+}
+
+.loginField button:active {
+    position: relative;
+    top: 3px;
+}
+
+.loginField button:hover {
+    cursor: pointer;
+}
+
+.loginField p:hover {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}

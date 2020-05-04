@@ -2,61 +2,53 @@ import React, { useEffect, useState } from 'react'
 import './Counter.css'
 
 export default function Counter() {
-    const [input, setInputValue] = useState('');
-    const [todoList, setTodoList] = useState([]);
+    const [input, setInput] = useState('');
+    const [arr, setArr] = useState([]);
+    const [input2, setInput2] = useState('');
+    const [id2, setId2] = useState('')
 
-    const inputValue = e => {
-        setInputValue(e.target.value)
+    const clickAdd = () => {
+        setArr([...arr, {id: arr.length , value: input}]);
+        setInput('');
     }
 
-    let add = () => {
-        setTodoList([...todoList, { id: todoList.length + 1, input }])
-        setInputValue('')
+    const clickDel = id => {
+        setArr(arr.filter((item, idx) => idx !== id))
     }
 
-    const del = (index) => {
-        console.log(`index is ${index}`);
-        let removeAdd = [...todoList]
-        removeAdd.splice(index, 1)                                 
-        
-        let removeFilter = [...todoList];
-        removeFilter = removeFilter.filter((item, idx) => idx !== index)
-        setTodoList(todoList.filter((item, idx) => idx !== index))
+    const clickEdit = id => {
+        let text = prompt("Insert your input");
+        setArr(arr.map((item, idx) => idx === id? item = {idx: id, value: text}: item))
     }
 
-    const edit = index => {
-        let ask = prompt('Input your number')
-        let editText = [...todoList];
-        setTodoList(editText.map((item, idx) => idx === index? item = {id: idx, input: ask}: item))
-        console.log(editText)
-        
+    const editUp = () => {
+        const dummy = [...arr]
+        dummy.map((item, id) => id == id2? item = {id: id, value: input2}: item)
+        setArr(dummy)
+        // setInput2('')
+        // setId2('')
     }
+
+
+
 
     return (
         <div className="container">
-            <div className="firstDiv">
-                <h1>To do list</h1>
-            </div>
-            <div style={{ height: 200 }}>
-                <ul>
-                    {todoList.map((obj, index) => {
-                        const id = obj.id;
-                        return(
-                            <li key = {id}>
-                                {obj.input}
-                                <button onClick = {() => del(index)}>
-                                    Del
-                                </button>
-                                <button onClick = {() => edit(index)}>
-                                    Edit
-                                </button>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>
-            <input onChange={inputValue} value={input} />
-            <button onClick={add}>Add</button>
+            <input value = {input} onChange = {e => setInput(e.target.value)}></input>
+            <button onClick = {clickAdd}>Add</button>
+            <br />
+            <input value = {input2} onChange = {e => setInput2(e.target.value)}></input>
+            <input value = {id2} onChange = {e => setId2(e.target.value)}></input>
+            <button onClick = {editUp}>Edit</button>
+
+            <ul>
+                {arr.map((item, id) => 
+                <li key = {item.id}>
+                    {item.value} {item.id}
+                    <button onClick = {() => clickDel(id)}>Del</button>
+                    {/* <button onClick = {() => clickEdit(id)}>Edit</button> */}
+                </li>)}
+            </ul>
         </div>
     )
 }

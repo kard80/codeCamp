@@ -1,10 +1,17 @@
 .people {
     background-color: white;
-    width: 1320px;
-    height: 650px;
+    width: 1180px;
+    height: 600px;
     position: absolute;
     top: 68px;
     left: 175px;
+}
+
+.people .head {
+    margin-top: 10px;
+    position: relative;
+    left: 1px;
+    width: 80%;
 }
 
 .people table {

@@ -1,11 +1,12 @@
 .timestamp {
     background-color: white;
-    width: 1320px;
-    height: 650px;
+    width: 1180px;
+    height: 600px;
     position: absolute;
     top: 68px;
     left: 175px;
 }
+
 
 .head {
     display: flex;
@@ -15,6 +16,7 @@
     padding-top: 20px;
     margin-top: 20px;
     align-items: flex-end;
+
 }
 
 .head select {
