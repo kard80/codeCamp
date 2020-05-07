@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
-import axios from 'axios'
+import axios from '../config/axios'
+import LoginForm from './LoginForm'
+import jwtDecode from 'jwt-decode'
 import './App.css';
 
 function App() {
@@ -8,9 +10,22 @@ function App() {
   const [nameValue, setNameValue] = useState('');
   const [ageValue, setAgeValue] = useState('');
   const [phoneValue, setPhoneValue] = useState('');
+  const [isLogin, setIsLogin] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    fetchData();
+    const token = localStorage.getItem("ACCESS_TOKEN")
+    if(token) {
+      const user = jwtDecode(token);
+      setUserInfo(user)
+      setIsLogin(true)
+    }
+  }, [])
+
 
   const fetchData = async () => {
-    const result = await axios.get('http://localhost:8000/student')
+    const result = await axios.get('/student')
     setStudents(result.data)
   }
 
@@ -20,16 +35,23 @@ function App() {
       age: ageValue,
       number: phoneValue
     };
-    await axios.post('http://localhost:8000/student', body)
+    await axios.post('/student', body)
+    fetchData();
+    setNameValue('')
+    setAgeValue('')
+    setPhoneValue('')
   }
 
   const del = async (id) => {
-    console.log(`function del was run at id: ${id}`)
-    await axios.delete(`http://localhost:8000/student/${id}`)
-    fetchData();
+    const headers = {Authorization: `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
+    await axios.delete(`/student/${id}`, {headers})
+    fetchData()
+    alert(`${id} has been deleted`)
+    
   }
   return (
     <div className="App">
+      <LoginForm isLogin={isLogin} setIsLogin={setIsLogin}/>
       <button onClick = {fetchData}>Fetch data</button>
       {students.map((item) => (
         <div
@@ -37,7 +59,7 @@ function App() {
           <div>name: {item.name} </div>
           <div>age: {item.age} </div>
           <div>phone: {item.number_phone} </div>
-          <button onClick = {() => del(item.id)}>Delete</button>
+          {isLogin && <button onClick = {() => del(item.id)}>Delete</button>}
           <hr />
         </div>
       ))}

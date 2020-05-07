@@ -4,7 +4,7 @@
     background-color: white;
 }
 
-.container {
+.navBarBody .container {
     width: 97%;
     height: 100%;
     margin: auto;
@@ -13,7 +13,7 @@
     align-items: center;
 }
 
-.containerSubClass {
+.navBarBody .containerSubClass {
     height: 100%;
     display: flex;
     align-items: center;
@@ -24,4 +24,22 @@
     height: 36px;
     border-radius: 50%;
     margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.navBarBody .signOut {
+    position: absolute;
+    top: 44px;
+    right: 1px;
+    z-index: 5;
+}
+
+.navBarBody .signOut button {
+    color: white;
+    background-color: red;
+    border-color: red;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
 }

@@ -105,8 +105,13 @@
     color: white;
 }
 
-.loginField p {
-    padding-right: 140px;
+.createAccount {
+    padding-right: 120px;
     margin-top: 5px;
 }
 
+.buttonLogin {
+    width: 100%;
+    position: relative;
+    left: 35px;
+}

@@ -9,12 +9,12 @@
     height: 120px;
 }
 
-.cardContainer {
+.feature .cardContainer {
     height: 50%;
     padding-top: 20px;
 }
 
-.cardContainer img {
+.feature .cardContainer img {
     width: 216px;
 }
 

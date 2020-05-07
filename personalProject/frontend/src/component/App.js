@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom'
 import LandingPage from './LandingPage/LandingPage'
+import Register from './LandingPage/Register'
 import Login from './LandingPage/Login'
 import Body from './BodyPage/Body'
 import PeopleSub from './BodyPage/PeopleSub/PeopleSub'
@@ -17,6 +18,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/home" component={LandingPage} />
+        <Route exact path="/register" component={Register} />
         <Route exact path="/People" component={People} />
         <Route exact path="/TimeStamp" component={TimeStamp} />
         <Route exact path="/Leaves" component={Leaves} />

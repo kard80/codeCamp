@@ -11,9 +11,9 @@ export default function Sidebar() {
             <Row>
                 <Col>
                     <ul>
-                    <Link to="/home" className = "sidebarMain"><li>People</li></Link>
-                    <Link to ="/information" className = "sidebarMain"><li>Timestamp</li></Link>
-                    <Link to="/Leaves" className = "sidebarMain"><li>Leaves</li></Link>
+                        <Link to="/People" className="sidebarMain"><li>People</li></Link>
+                        <Link to="/TimeStamp" className="sidebarMain"><li>Timestamp</li></Link>
+                        <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
                     </ul>
                 </Col>
             </Row>

@@ -7,12 +7,13 @@ import Login from './Login'
 import '../../style/LandingPage/LandingPage.css'
 
 
-export default function LandingPage (props) {
+export default function LandingPage () {
+    const [feature, setFeature] = useState(false)
         return (
             <div>
                 <NavBar />
                 <Home />
-                <Feature />
+                <Feature id="feature"/>
                 <About />
             </div>
         )

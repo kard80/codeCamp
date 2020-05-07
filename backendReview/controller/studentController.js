@@ -49,7 +49,7 @@ const deleteStudentById = async (req, res) => {
     const targetId = req.params.id;
      await db.student.destroy({where: {id: targetId}})
 
-    res.status(200).send(`${targetId} has been deleted`)
+    res.status(204).send(`${targetId} has been deleted`)
 }
 
 module.exports = {

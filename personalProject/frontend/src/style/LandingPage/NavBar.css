@@ -67,8 +67,9 @@
     cursor: pointer;
 }
 
+
 .loginField p:hover {
-    text-decoration: underline;
-    color: blue;
+    color: #169DD7;
     cursor: pointer;
+    text-decoration: underline;
 }

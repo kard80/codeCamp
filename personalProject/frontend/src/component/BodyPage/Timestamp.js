@@ -2,32 +2,14 @@ import React from 'react'
 import '../../style/BodyPage/Timestamp.css'
 import {Row, Col} from 'antd'
 import {Link} from 'react-router-dom'
+import NavbarBody from './NavbarBody'
+import Sidebar from './Sidebar'
 
 export default function Timestamp() {
     return (
         <div>
-        <div className="navBarBody">
-            <Row className="container">
-                <Col>
-                    <h1>Super Hr</h1>
-                </Col>
-                <Col className="containerSubClass">
-                    <p>Name waiting from database</p>
-                    <img src="https://image.freepik.com/free-vector/businessman-profile-cartoon_18591-58479.jpg" />
-                </Col>
-            </Row>
-        </div>
-        <div className="sidebar">
-            <Row>
-                <Col>
-                    <ul>
-                        <Link to="/People" className="sidebarMain"><li>People</li></Link>
-                        <Link to="/TimeStamp" className="sidebarMain"><li>Timestamp</li></Link>
-                        <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
-                    </ul>
-                </Col>
-            </Row>
-        </div>
+        <NavbarBody />
+        <Sidebar />
         <div className="timestamp">
             <div className="head">
                 <select>

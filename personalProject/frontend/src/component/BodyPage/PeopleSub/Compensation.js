@@ -2,58 +2,12 @@ import React from 'react'
 import '../../../style/BodyPage/PeopleSub/Compensation.css'
 import { Col, Row } from 'antd'
 import { Link } from 'react-router-dom'
+import PeopleSub from './PeopleSub'
 
 export default function Compensation() {
     return (
         <div>
-            <div className="navBarBody">
-                <Row className="container">
-                    <Col>
-                        <h1>Super Hr</h1>
-                    </Col>
-                    <Col className="containerSubClass">
-                        <p>Name waiting from database</p>
-                        <img src="https://image.freepik.com/free-vector/businessman-profile-cartoon_18591-58479.jpg" />
-                    </Col>
-                </Row>
-            </div>
-            <div className="general">
-                <div className="backArrow">
-                    <Link to="/People">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </Link>
-                </div>
-                <div className="profileAndPanel">
-                    <div className="profile">
-                        <div>
-                            <div>
-                                <img src="#" />
-                                <div className="name">
-                                    <h1>Kard Sahaphong</h1>
-                                    <p>Consultant</p>
-                                </div>
-                            </div>
-                            <p>Tel: 061-4121998</p>
-                            <p>kard.sp2@gmail.com</p>
-                        </div>
-                    </div>
-                    {/* <General /> */}
-                    {/* <Information /> */}
-                    {/* <Compensation /> */}
-                </div>
-            </div>
-            <div className="sidebar">
-                <Row>
-                    <Col>
-                        <ul>
-                            <Link to="/home" className="sidebarMain"><li>People</li></Link>
-                            <Link to="/TimeStamp" className="sidebarMain"><li>Timestamp</li></Link>
-                            <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
-                        </ul>
-                    </Col>
-                </Row>
-            </div>
+            <PeopleSub />
             <div className="compensation">
                 <div className="general">
                     <div className="backArrow">
