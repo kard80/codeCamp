@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react'
 import { Col, Row } from 'antd'
 import {Link} from 'react-router-dom'
 import '../../style/BodyPage/NavbarBody.css'
+import axios from '../../config/axios'
 
 
 export default function NavbarBody() {
     const [signOut, setSignOut] = useState(false)
+
     return (
         <div className="navBarBody">
             <Row className="container">
@@ -13,7 +15,7 @@ export default function NavbarBody() {
                     <h1>Super Hr</h1>
                 </Col>
                 <Col className="containerSubClass">
-                    <p>Name waiting from database</p>
+                    <p>name</p>
                     <img src="https://image.freepik.com/free-vector/businessman-profile-cartoon_18591-58479.jpg" onClick = {() => setSignOut(!signOut)} />
                     <Row>
                         {signOut && <Col className = "signOut"><Link to="/home"><button>Sign out</button></Link></Col>}

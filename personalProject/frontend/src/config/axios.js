@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-axios.default.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://localhost:8000/'
 
 export default axios;

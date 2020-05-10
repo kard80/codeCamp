@@ -2,10 +2,25 @@ import React, { useEffect, useState, usePrevious } from 'react'
 import { Col, Row } from 'antd'
 import '../../style/LandingPage/Login.css'
 import NavBar from './NavBar'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import axios from '../../config/axios'
 
 export default function Login(props) {
     const {login, setLogin} = props
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLogin, setIsLogin] = useState(false);
+
+    const loginFnc = async () => {
+        const body = {
+            username,
+            password
+        }
+        const result = await axios.post('/user/login', body);
+        localStorage.getItem("ACCESS_TOKEN", result.data.token)
+        setIsLogin(true)
+        console.log(result)
+    }
     return (
         <div className="login">
             <div className="block">
@@ -16,9 +31,10 @@ export default function Login(props) {
                 <div className="header"><h1>Super HR</h1></div>
                 <div className="loginField">
                     <div>
-                        <input placeholder="Username" />
-                        <input placeholder="Password" />
-                        <Link to="/People" className="buttonLogin"><button>Log in</button></Link>
+                        <input placeholder="Username" value = {username} onChange = {e => setUsername(e.target.value)}/>
+                        <input placeholder="Password" value = {password} onChange = {e => setPassword(e.target.value)}/>
+                        <button className="buttonLogin">Log in</button>
+                        {isLogin && <Redirect to = "/People" />}
                         <Link to="/register" className="createAccount"><p>Create administrative user</p></Link>
                     </div>
                 </div>
