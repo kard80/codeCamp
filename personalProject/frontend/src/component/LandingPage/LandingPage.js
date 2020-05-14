@@ -6,14 +6,19 @@ import About from './About'
 import Login from './Login'
 import '../../style/LandingPage/LandingPage.css'
 
+import {Redirect} from 'react-router-dom'
 
 export default function LandingPage () {
     const [feature, setFeature] = useState(false)
+
+    const linkAtFeature = () => {
+        <Redirect to="#feature" />
+    }
         return (
             <div>
-                <NavBar />
+                <NavBar linkAtFeature={linkAtFeature}/>
                 <Home />
-                <Feature id="feature"/>
+                <Feature id= "feature"/>
                 <About />
             </div>
         )

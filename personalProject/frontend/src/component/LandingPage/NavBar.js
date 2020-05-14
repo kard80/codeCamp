@@ -6,10 +6,11 @@ import '../../style/LandingPage/NavBar.css'
 import '../../style/LandingPage/Login.css'
 import Login from './Login'
 
-export default function NavBar() {
+export default function NavBar(props) {
     const [login, setLogin] = useState(false)
 
-    
+   
+
     return (
         <div id="navBar">
             <Row className="nav">
@@ -19,7 +20,7 @@ export default function NavBar() {
                 <Col className="navList">
                     <ul>
                         <li>Home</li>
-                        <li><Link to='/home#feature'>Feature</Link></li>
+                        <li onClick={props.linkAtFeature}>Feature</li>
                         <li>Contact us</li>
                         <li>
                             <button onClick={() => setLogin(true)}>Login</button>

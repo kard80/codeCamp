@@ -59,3 +59,8 @@
 .register input {
     width: 300px;
 }
+
+.register input[type="password"] {
+    border: none;
+    border: solid 1px rgb(164, 164, 164);
+}

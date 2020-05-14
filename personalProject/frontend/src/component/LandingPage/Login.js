@@ -33,7 +33,7 @@ export default function Login(props) {
                     <div>
                         <input placeholder="Username" value = {username} onChange = {e => setUsername(e.target.value)}/>
                         <input placeholder="Password" value = {password} onChange = {e => setPassword(e.target.value)}/>
-                        <button className="buttonLogin">Log in</button>
+                        <button className="buttonLogin" onClick={loginFnc}>Log in</button>
                         {isLogin && <Redirect to = "/People" />}
                         <Link to="/register" className="createAccount"><p>Create administrative user</p></Link>
                     </div>

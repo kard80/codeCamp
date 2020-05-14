@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import '../../style/LandingPage/Register.css'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import axios from '../../config/axios'
 
 export default function Register() {
@@ -8,6 +8,7 @@ export default function Register() {
     const [password, setPassword] = useState('')
     const [usernameArray, setUsernameArray] = useState([])
     const [passwordArray, setPasswordArray] = useState([])
+    const [finished, setFinished] = useState(false)
 
 
     const submit = async () => {
@@ -16,9 +17,14 @@ export default function Register() {
             password
         }
         await axios.post('/user/register', body)
+
+        alert('registry completed')
+
         setUsername('')
         setPassword('')
+        setFinished(!finished)
     }
+
 
     return (
         <div className="register">
@@ -39,9 +45,10 @@ export default function Register() {
                 <div>
                     <label>password</label>
                     <br />
-                    <input value = {password} onChange = {e => setPassword(e.target.value)} />
+                    <input value = {password} type="password" onChange = {e => setPassword(e.target.value)} />
                 </div>
                 <div><button onClick={submit}>Submit</button></div>
+                {finished && <Redirect to={'/home'} />}
             </div>
         </div>
     )
