@@ -1,3 +1,2 @@
-export const ADD_NOTE = "ADD_NOTE"
-export const ONCHANGE_TITLE = "ONCHANGE_TITLE";
-export const ONCHANGE_CONTENT = "ONCHANGE_CONTENT"
+export const ADD_NAME = "ADD_NAME"
+export const DEL_NAME = "DEL_NAME"

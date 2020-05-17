@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -6,7 +6,17 @@ import { connect } from 'react-redux'
 
 import * as actionTypes from './store/action'
 
+
 function App(props) {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+
+  const clicked = async (name, age) => {
+    await props.addName(name, age);
+    setName('')
+    setAge('')
+  }
+  
   return (
     <div className="App">
       <h1>React-Redux Notes app</h1>
@@ -14,43 +24,40 @@ function App(props) {
       <div>
         <label>Title</label>
         <br />
-        <input type="text" value={props.title} onChange={e => actionTypes.ONCHANGE_TITLE(e.target.value)} />
+        <input type="text" value={name} onChange={e => setName(e.target.value)} />
       </div>
       <div>
         <label>Content:</label>
         <br />
-        <textarea value={props.content} onChange={e => actionTypes.ONCHANGE_CONTENT(e.target.value)} />
+        <textarea value={age} onChange={e => setAge(e.target.value)} />
       </div>
-      <button>Add Note</button>
+      <button onClick={() => clicked(name, age)}>Add Note</button>
       <hr />
       <h3>Notes</h3>
       <button>Show Active Notes</button>
       <button>Show Deleted Notes</button>
       <ul>
-        {props.list.map(item => (
-          <li>
-            {item.title}
+        {props.name.map((item) => (
+          <li key={item.id} onClick={() => props.deleteName(item.id)}>
+            {item.name}
             <br />
-            {item.content}
-          </li>))}
+            {item.age}
+          </li>
+        ))}
       </ul>
 
     </div>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    list: state.list
-  }
-}
+const mapStateToProps = state => ({
+    name: state.name,
+    age: state.age
+})
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addNote: () => dispatch({ type: actionTypes.ADD_NOTE }),
-    onChangeTitle: e => dispatch({ type: actionTypes.ONCHANGE_TITLE, value: e }),
-    onChangeContent: e => dispatch({type: actionTypes.ONCHANGE_CONTENT, value: e})
-  }
-}
+const mapDispatchToProps = dispatch => ({
+    addName: (name, age) => dispatch({ type: actionTypes.ADD_NAME, name, age}),
+    deleteName: id => dispatch({type: actionTypes.DEL_NAME, id})
+  })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
