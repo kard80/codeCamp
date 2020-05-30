@@ -8,9 +8,9 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const variable = req.body.post
+    const name = req.body.name
     db.person.create({
-        data: variable
+        name,
     })
     
     .then(result => {

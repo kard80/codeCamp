@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router();
 const db = require('../models')
 const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const passport = require('passport')
+
+const auth = passport.authenticate('jwt', {session: false})
 
 router.post('/register', async (req, res) => {
     const username = req.body.username;

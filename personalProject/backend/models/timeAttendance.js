@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const timeAttendance = sequelize.define('timeAttendance', {
         date: {
-            type: DataTypes.DATE
+            type: DataTypes.STRING
         },
         clockIn: {
             type: DataTypes.STRING,
@@ -12,9 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true
         },
         workingTime: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
-        Remark: {
+        
+        remark: {
             type: DataTypes.STRING
         }
     })

@@ -156,3 +156,7 @@
     margin-top: 5px;
 }
 
+.request [type=date] {
+    width: 100%;
+}
+

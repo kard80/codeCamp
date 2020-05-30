@@ -22,17 +22,33 @@
 .head select {
     width: 100px;
     height: 20px;
+    outline: none;
+}
+
+.head select option {
+    outline: none;
+    border: none;
 }
 
 .head button {
     border-radius: 36px;
-    background-color: #62E057;
     border: none;
     box-shadow: 5px 5px 5px;
     color: white;
     outline: none;
     width: 150px;
     height: 40px;
+    cursor: pointer;
+    background-color: red;
+}
+
+.head .clockOut {
+    background-color: #62E057;
+}
+
+.head button:active {
+    position: relative;
+    top: 2px;
 }
 
 .table {
@@ -50,4 +66,8 @@
     color: white;
     background-color: #2E94DD;
     padding: 10px 20px 10px 20px;
+}
+
+.timestamp .table tr {
+    margin-left: 20px;
 }

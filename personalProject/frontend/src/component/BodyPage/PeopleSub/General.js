@@ -1,92 +1,289 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../../../style/BodyPage/PeopleSub/General.css'
-import { Col, Row } from 'antd'
-import { Link } from 'react-router-dom'
 import PeopleSub from './PeopleSub'
+import Information from './Information'
+import axios from '../../../config/axios';
 
 export default function General() {
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [gender, setGender] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [martialStatus, setMartialStatus] = useState('');
+    const [nationality, setNationality] = useState('');
+    const [IDNumber, setIDNumber] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [address, setAddress] = useState('');
+        
+    const [employeeCode, setEmployeeCode] = useState('');
+    const [workingStartDate, setWorkingStartDate] = useState('');
+    const [probationEndDate, setProbationEndDate] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
+    const [department, setDepartment] =useState('');
+    const [employeeType, setEmployeeType] = useState('');
+    const [employeeStatus, setEmployeeStatus] = useState('');
+    const [manager, setManager] = useState('');
+    const [resignationDate, setResignationDate] = useState('');
+    const [resignationReason, setResignationReason] = useState('');
+
+    const [taxID, setTaxID] = useState('');
+    const [accountNO, setAccountNO] = useState('');
+    const [accountName, setAccountName] = useState('');
+    const [compensationType, setCompensationType] = useState('');
+    const [salary, setSalary] = useState('');
+    
+    const [general, setGeneral] = useState(false)
+    const [info, setInfo] = useState(false)
+    const [compensation, setCompensation] = useState(true)
+
+    const generalClick = () => {
+        setGeneral(true)
+        setInfo(false)
+        setCompensation(false)
+    }
+    const infoClick = () => {
+        setGeneral(false);
+        setInfo(true);
+        setCompensation(false);
+    }
+    const compensationClick = () => {
+        setGeneral(false);
+        setInfo(false);
+        setCompensation(true)
+    }
+
+    const sendData = async () => {
+        console.log('function is running')
+        const body = {
+            name,
+            // surname,
+            // email,
+            // gender,
+            // dateOfBirth,
+            // martialStatus,
+            // nationality,
+            // IDNumber,
+            // contactNumber,
+            // address,
+
+            // employeeCode,
+            // workingStartDate,
+            // probationEndDate,
+            // jobTitle,
+            // department,
+            // employeeType,
+            // employeeStatus,
+            // manager,
+            // resignationDate,
+            // resignationReason,
+
+            // taxID,
+            // accountNO,
+            // accountName,
+            // compensationType,
+            // salary,
+        }
+        await axios.post('/person', body)
+    }
     return (
         <div>
             <PeopleSub />
             <div className="General">
                 <div className="sidebarPersonal">
                     <ul>
-                        <Link to="/people/general">
+                        {/* <Link to="/people/general">
                             <li className="personalList">General</li>
-                        </Link>
-                        <Link to="/people/Information">
+                            </Link>
+                            <Link to="/people/Information">
                             <li className="personalList">Employee info.</li>
-                        </Link>
-                        <Link to="/people/Compensation">
-                            <li className="personalList">Compensation</li>
-                        </Link>
+                        </Link> */}
+                        <li className="personalList" onClick={generalClick}>General</li>
+                        <li className="personalList" onClick={infoClick}>Employee info.</li>
+                        <li className="personalList" onClick={compensationClick}>Compensation</li>
+                        <button onClick={sendData}>Save</button>
                     </ul>
                 </div>
-                <div className="gridContainer">
+                {general && (
+                    <div className="gridContainer">
+                        <div className="gridItem">
+                            <div id="item1">
+                                <h1>Personal information</h1>
+                            </div>
+                            <div id="item2">
+                                <label>Name</label>
+                                <br />
+                                <input value={name} onChange={e => setName(e.target.value)}></input>
+                            </div>
+                            <div id="item3">
+                                <label>Surname</label>
+                                <br />
+                                <input value={surname} onChange={e => setSurname(e.target.value)}></input>
+                            </div>
+                            <div id="item4">
+                                <label>E-mail</label>
+                                <br />
+                                <input type="email" value={email} onChange={e => setEmail(e.target.value)}></input>
+                            </div>
+                            <div id="item5">
+                                <label>Gender</label>
+                                <br />
+                                <select value={gender} onChange={e => setGender(e.target.value)}>
+                                    <option value="">--select--</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div id="item6">
+                                <label>Date of birth</label>
+                                <br />
+                                <input type="date" value={dateOfBirth} onChange={e => setDateOfBirth(e.target.value)}></input>
+                            </div>
+                            <div id="item7">
+                                <label>Martial status</label>
+                                <br />
+                                <select value={martialStatus} onChange={e => setMartialStatus(e.target.value)}>
+                                    <option value=''>--select--</option>
+                                    <option>Single</option>
+                                    <option>Married</option>
+                                    <option>divorced</option>
+                                    <option>widowed</option>
+                                </select>
+                            </div>
+                            <div id="item8">
+                                <label>Nationality</label>
+                                <br />
+                                <input value={nationality} onChange={e => setNationality(e.target.value)}></input>
+                            </div>
+                            <div id="item9">
+                                <label>ID number</label>
+                                <br />
+                                <input value={IDNumber} onChange={e => setIDNumber(e.target.value)}></input>
+                            </div>
+                            <div id="item10">
+                                <label>Contact number</label>
+                                <br />
+                                <input value={contactNumber} onChange={e => setContactNumber(e.target.value)}></input>
+                            </div>
+                            <div id="item11">
+                                <label>Address</label>
+                                <br />
+                                <input value={address} onChange={e => setAddress(e.target.value)}></input>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {info && (
+                    <div className="gridContainer">
+                        <div className="gridItem">
+                            <div id="item1">
+                                <h1>Employee information</h1>
+                            </div>
+                            <div id="item2">
+                                <label>Employee code</label>
+                                <br />
+                                <input value={employeeCode} onChange={e => setEmployeeCode(e.target.value)}/>
+                            </div>
+                            <div id="item3">
+                                <label>Working start date</label>
+                                <br />
+                                <input type="date" value={workingStartDate} onChange={e => setWorkingStartDate(e.target.value)}></input>
+                            </div>
+                            <div id="item4">
+                                <label>Probation end date</label>
+                                <br />
+                                <input type="date" value={probationEndDate} onChange={e => setProbationEndDate(e.target.value)}></input>
+                            </div>
+                            <div id="item5">
+                                <label>Job title</label>
+                                <br />
+                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)}/>
+                            </div>
+                            <div id="item6">
+                                <label>Department</label>
+                                <br />
+                                <input value={department} onChange={e => setDepartment(e.target.value)}/>
+                            </div>
+                            <div id="item7">
+                                <label>Employee type</label>
+                                <br />
+                                <select value={employeeType} onChange={e => setEmployeeType(e.target.value)} placeholder="select">
+                                    <option>Permanent</option>
+                                    <option>Contact</option>
+                                    <option>Part-time</option>
+                                    <option>Internship</option>
+                                </select>
+                            </div>
+                            <div id="item8">
+                                <label>Employee status</label>
+                                <br />
+                                <select value={employeeStatus} onChange={e => setEmployeeStatus(e.target.value)}>
+                                    <option>Confirmed</option>
+                                    <option>Probation</option>
+                                    <option>Resigned</option>
+                                    <option>Dismissed</option>
+                                    <option>Contract Ended</option>
+                                    <option>Retired</option>
+                                    <option>Retrenched</option>
+                                    <option>Deceased</option>
+                                </select>
+                            </div>
+                            <div id="item9">
+                                <label>Manager</label>
+                                <br />
+                                <select value={manager} onChange={e => setManager(e.target.value)}>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </div>
+                            <div id="item10">
+                                <label>Resignation date</label>
+                                <br />
+                                <input type="date" value={resignationDate} onChange={e => setResignationDate(e.target.value)}></input>
+                            </div>
+                            <div id="item11">
+                                <label>Resignation reason</label>
+                                <br />
+                                <input value={resignationReason} onChange={e => setResignationReason(e.target.value)}/>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {compensation && (
+                    <div className="gridContainer">
                     <div className="gridItem">
                         <div id="item1">
-                            <h1>Personal information</h1>
+                            <h1>Compensation</h1>
                         </div>
                         <div id="item2">
-                            <label>Name</label>
+                            <label>Tax ID</label>
                             <br />
-                            <input></input>
+                            <input value={taxID} onChange={e => setTaxID(e.target.value)}/>
                         </div>
                         <div id="item3">
-                            <label>Surname</label>
+                            <label>Account No.</label>
                             <br />
-                            <input></input>
+                            <input value={accountNO} onChange={e => setAccountNO(e.target.value)}/>
                         </div>
                         <div id="item4">
-                            <label>E-mail</label>
+                            <label>Account name</label>
                             <br />
-                            <input></input>
+                            <input value={accountName} onChange={e => setAccountName(e.target.value)}/>
                         </div>
                         <div id="item5">
-                            <label>Gender</label>
+                            <label>Compensation type</label>
                             <br />
-                            <select>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
+                            <input value={compensationType} onChange={e => setCompensationType(e.target.value)}/>
                         </div>
                         <div id="item6">
-                            <label>Date of birth</label>
+                            <label>Salary</label>
                             <br />
-                            <input type="date"></input>
-                        </div>
-                        <div id="item7">
-                            <label>Martial status</label>
-                            <br />
-                            <select>
-                                <option>Single</option>
-                                <option>Married</option>
-                                <option>divorced</option>
-                                <option>widowed</option>
-                            </select>
-                        </div>
-                        <div id="item8">
-                            <label>Nationality</label>
-                            <br />
-                            <input></input>
-                        </div>
-                        <div id="item9">
-                            <label>ID number</label>
-                            <br />
-                            <input></input>
-                        </div>
-                        <div id="item10">
-                            <label>Contact number</label>
-                            <br />
-                            <input></input>
-                        </div>
-                        <div id="item11">
-                            <label>Address</label>
-                            <br />
-                            <input></input>
+                            <input value={salary} onChange={e => setSalary(e.target.value)}/>
                         </div>
                     </div>
                 </div>
+                )}
             </div>
         </div>
     )

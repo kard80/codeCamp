@@ -9,7 +9,7 @@ export default function PeopleSub() {
     return (
         <div>
             <NavbarBody />
-
+            <Sidebar />
             <div className="general">
                 <div className="backArrow">
                     <Link to="/People">
@@ -33,7 +33,6 @@ export default function PeopleSub() {
                     </div>
                 </div>
             </div>
-            <Sidebar />
         </div>
     )
 }

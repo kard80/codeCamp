@@ -7,13 +7,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         email: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            isEmail: true,
         },
         gender: {
             type: DataTypes.STRING
         },
         dateOfBirth: {
-            type: DataTypes.DATE
+            type: DataTypes.DATEONLY
         },
         martialStatus: {
             type: DataTypes.STRING
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         nationality: {
             type: DataTypes.STRING
         },
-        idNumber: {
+        IDNumber: {
             type: DataTypes.INTEGER
         },
         contactNumber: {
@@ -29,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         address: {
             type: DataTypes.STRING
+        },
+        employeeCode: {
+            type: DataTypes.INTEGER,
         },
         workingStartDate: {
             type: DataTypes.DATE
@@ -39,6 +43,9 @@ module.exports = (sequelize, DataTypes) => {
         jobTitle: {
             type: DataTypes.STRING
         },
+        // department: {
+        //     type: DataTypes.STRING
+        // },
         employeeType: {
             type: DataTypes.STRING
         },
@@ -48,11 +55,26 @@ module.exports = (sequelize, DataTypes) => {
         manager: {
             type: DataTypes.STRING
         },
-        resignDate: {
+        resignationDate: {
             type: DataTypes.DATE
         },
-        resignReason: {
+        resignationReason: {
             type: DataTypes.STRING
+        },
+        taxID: {
+            type: DataTypes.INTEGER
+        },
+        accountNO: {
+            type: DataTypes.INTEGER
+        },
+        accountName: {
+            type: DataTypes.STRING
+        },
+        compensationType: {
+            type: DataTypes.STRING
+        },
+        salary: {
+            type: DataTypes.INTEGER
         }
     })
     person.associate = models => {

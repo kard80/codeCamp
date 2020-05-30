@@ -18,10 +18,10 @@ app.use('/department', department)
 app.use('/leave', leave)
 app.use('/person', person)
 app.use('/position', position)
-app.use('timeAttendance', timeAttendance)
+app.use('/timeAttendance', timeAttendance)
 app.use('/user', user)
 
-db.sequelize.sync({ force: false })
+db.sequelize.sync({ force: true })
     .then(() => {
         app.listen(8000, () => {
             console.log('Server is running')

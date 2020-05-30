@@ -1,11 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../../style/BodyPage/Leaves.css'
 import { Col, Row } from 'antd'
 import { Link } from 'react-router-dom'
 import NavbarBody from './NavbarBody'
 import Sidebar from './Sidebar'
+import axios from '../../config/axios'
 
 export default function Leaves() {
+    const [type, setType] = useState('')
+    const [startDate, setStartDate] = useState('')
+    const [timeStartDate, setTimeStartDate] = useState('')
+    const [timeEndDate, setTimeEndDate] = useState('')
+    const [endDate, setEndDate] = useState('')
+    const [reason, setReason] = useState('')
+
+    const sendData = async () => {
+        const body = {
+            type,
+            startDate,
+            endDate,
+            timeStartDate,
+            timeEndDate,
+            reason
+        }
+        let makeSure = window.confirm('Are you sure to send this?')
+        if(makeSure) await axios.post('/leave', body)
+    }
     return (
         <div>
             <NavbarBody />
@@ -73,63 +93,49 @@ export default function Leaves() {
                         <div>
                             <label>Leave type*</label>
                             <br />
-                            <select>
-                                <option>--Select--</option>
-                                <option>Leave without pay</option>
-                                <option>Maternity Leave</option>
-                                <option>Personal Leave</option>
-                                <option>Sick</option>
+                            <select onChange={e => setType(e.target.value)}>
+                                <option >--Select--</option>
+                                <option value="Leave without pay">Leave without pay</option>
+                                <option value="Maternity Leave">Maternity Leave</option>
+                                <option value="Personal Leave">Personal Leave</option>
+                                <option value="Sick">Sick</option>
                             </select>
                         </div>
                         <div>
                             <label>Start date*</label>
                             <br />
-                            <select>
-                                <option>--Select--</option>
-                                <option></option>
-                            </select>
+                            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}/>
                             <br />
-                            <input type="radio" id="radioStartDay" name="startDate" value="All day"></input>
+                            <input type="radio" id="radioStartDay" name="startDate" value="All day" onChange={e => setTimeStartDate(e.target.value)}></input>
                             <label for="radioStartDay">All day</label>
-                            <input type="radio" id="radioStartAm" name="startDate" value="AM"></input>
+                            <input type="radio" id="radioStartAm" name="startDate" value="AM" onChange={e => setTimeStartDate(e.target.value)}></input>
                             <label for="radioStartAm">AM</label>
-                            <input type="radio" id="radioStartPm" name="startDate" value="PM"></input>
+                            <input type="radio" id="radioStartPm" name="startDate" value="PM" onChange={e => setTimeStartDate(e.target.value)}></input>
                             <label for="radioStartPm">PM</label>
                         </div>
                         <div>
                             <label>End date*</label>
                             <br />
-                            <select>
+                            <input type="date" onChange={e => setEndDate(e.target.value)}/>
+                            {/* <select>
                                 <option>--Select--</option>
                                 <option></option>
-                            </select>
+                            </select> */}
                             <br />
-                            <input type="radio" id="radioEndDay" name="endDate" value="All day" ></input>
+                            <input type="radio" id="radioEndDay" name="endDate" value="All day" onChange={e => setTimeEndDate(e.target.value)}></input>
                             <label for="radioEndDay">All day</label>
-                            <input type="radio" id="radioEndAm" name="endDate" value="AM"></input>
+                            <input type="radio" id="radioEndAm" name="endDate" value="AM" onChange={e => setTimeEndDate(e.target.value)}></input>
                             <label for="radioEndAm">AM</label>
-                            <input type="radio" id="radioEndPm" name="endDate" value="PM"></input>
+                            <input type="radio" id="radioEndPm" name="endDate" value="PM" onChange={e => setTimeEndDate(e.target.value)}></input>
                             <label for="radioEndPm">PM</label>
-                        </div>
-                        <div>
-                            <label>Approver*</label>
-                            <br />
-                            <select>
-                                <option>--Select</option>
-                            </select>
                         </div>
                         <div>
                             <label>Reason</label>
                             <br />
-                            <textarea></textarea>
+                            <textarea onChange={e => setReason(e.target.value)}></textarea>
                         </div>
                         <div>
-                            <label>Upload Files</label>
-                            <br />
-                            <input type="file" />
-                        </div>
-                        <div>
-                            <input type="submit" />
+                            <input type="submit" onClick={sendData} />
                         </div>
                     </div>
                 </div>

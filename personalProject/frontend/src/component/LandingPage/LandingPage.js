@@ -11,14 +11,12 @@ import {Redirect} from 'react-router-dom'
 export default function LandingPage () {
     const [feature, setFeature] = useState(false)
 
-    const linkAtFeature = () => {
-        <Redirect to="#feature" />
-    }
+   
         return (
             <div>
-                <NavBar linkAtFeature={linkAtFeature}/>
+                <NavBar/>
                 <Home />
-                <Feature id= "feature"/>
+                <Feature/>
                 <About />
             </div>
         )

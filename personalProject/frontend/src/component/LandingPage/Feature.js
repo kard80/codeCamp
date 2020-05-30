@@ -13,7 +13,7 @@ export default function Feature() {
                 </Row>
                 <Row className = "cardContainer" justify="space-between" align = "middle">
                     <Col className = "cardList">
-                    <img src = "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png" />"
+                    <img src = "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-ios7-person-512.png" />
                         <p>Person</p>
                     </Col>
                     <Col className = "cardList">

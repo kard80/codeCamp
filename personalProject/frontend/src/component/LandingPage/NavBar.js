@@ -20,7 +20,7 @@ export default function NavBar(props) {
                 <Col className="navList">
                     <ul>
                         <li>Home</li>
-                        <li onClick={props.linkAtFeature}>Feature</li>
+                        <li>Feature</li>
                         <li>Contact us</li>
                         <li>
                             <button onClick={() => setLogin(true)}>Login</button>
