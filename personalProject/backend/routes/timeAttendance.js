@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
 router.put('/', async (req, res) => {
     const date = new Date;
     const hour = date.getHours().length === 1 ? '0' + date.getHours() : String(date.getHours());
-    const minute = date.getMinutes().length === 1 ? '0' + date.getMinutes() : Stringgit (date.getMinutes());
+    const minute = date.getMinutes().length === 1 ? '0' + date.getMinutes() : String(date.getMinutes());
 
     const id = req.body.id
 

@@ -6,7 +6,8 @@ import axios from '../../config/axios'
 
 export default function Timestamp() {
     const [timeAttendance, setTimeAttendance] = useState([]);
-    const [clockIn, setClockIn] = useState(false);
+    const searchNull = timeAttendance.some(el => el.clockOut === null)
+
 
     useEffect(() => {
         fetchData();
@@ -19,7 +20,6 @@ export default function Timestamp() {
 
     const clickClockIn = async () => {
         alert('Clock-in completed')
-        setClockIn(true)
         await axios.post('/timeAttendance')
         fetchData();
     }
@@ -32,7 +32,6 @@ export default function Timestamp() {
             id,
             remark,
         }
-        setClockIn(false)
         await axios.put('/timeAttendance', body)
         fetchData();
     }
@@ -48,8 +47,8 @@ export default function Timestamp() {
                         <option>Good</option>
                         <option>Morning</option>
                     </select>
-                    {clockIn?
-                        <button onClick={clickClockOut}>Clock-out</button>:
+                    {searchNull ?
+                        <button onClick={clickClockOut}>Clock-out</button> :
                         <button className="clockOut" onClick={clickClockIn}>Clock-in</button>
                     }
                 </div>

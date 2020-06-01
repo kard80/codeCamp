@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATEONLY
         },
         timeStartDate: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
         },
         timeEndDate: {
             type: DataTypes.STRING
@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         reason: {
             type: DataTypes.STRING
         },
+        totalDate: {
+            type: DataTypes.STRING
+        }
     })
     leave.associate = models => {
         leave.belongsTo(models.person, {foreignKey: "personId"})

@@ -160,3 +160,7 @@
     width: 100%;
 }
 
+.request input:invalid {
+    border-color: 5px solid red;
+}
+

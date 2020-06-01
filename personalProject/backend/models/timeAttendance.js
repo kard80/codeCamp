@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         
         remark: {
             type: DataTypes.STRING
-        }
+        },
     })
     timeAttendance.associate = models => {
         timeAttendance.belongsTo(models.person, {foreignKey: "personId"})
