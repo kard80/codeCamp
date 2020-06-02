@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             notNull: true
         },
+        role: {
+            type: DataTypes.STRING
+        }
     })
 
     return user

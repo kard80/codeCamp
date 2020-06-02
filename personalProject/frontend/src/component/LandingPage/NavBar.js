@@ -8,9 +8,7 @@ import Login from './Login'
 
 export default function NavBar(props) {
     const [login, setLogin] = useState(false)
-
    
-
     return (
         <div id="navBar">
             <Row className="nav">

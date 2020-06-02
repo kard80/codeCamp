@@ -9,12 +9,15 @@ export default function Register() {
     const [usernameArray, setUsernameArray] = useState([])
     const [passwordArray, setPasswordArray] = useState([])
     const [finished, setFinished] = useState(false)
+    const [isAdmin, setIsAdmin] = useState('')
 
 
     const submit = async () => {
+        const role = isAdmin === 'admin'? 'admin': 'user'
         const body = {
             username,
-            password
+            password,
+            role,
         }
         await axios.post('/user/register', body)
 
@@ -47,7 +50,12 @@ export default function Register() {
                     <br />
                     <input value = {password} type="password" onChange = {e => setPassword(e.target.value)} />
                 </div>
+                <div className = "userType">
+                    <input type="checkbox" name="userType" value="admin" onChange={e => setIsAdmin(e.target.value)}/>
+                    <label for="userType">admin regis</label>
+                </div>
                 <div><button onClick={submit}>Submit</button></div>
+                
                 {finished && <Redirect to={'/home'} />}
             </div>
         </div>

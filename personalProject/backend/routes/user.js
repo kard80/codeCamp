@@ -10,6 +10,7 @@ const auth = passport.authenticate('jwt', {session: false})
 router.post('/register', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const role = req.body.role;
 
     const checkUser = await db.user.findOne({ where: { username: username } })
     if (checkUser) {
@@ -20,7 +21,8 @@ router.post('/register', async (req, res) => {
 
         await db.user.create({
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            role,
         })
 
         res.status(200).send({ message: 'user created' })
@@ -41,7 +43,9 @@ router.post('/login', async (req, res) => {
             res.status(400).send({ message: 'Invalid Password' })
         } else {
             const payload = {
-                id: user.id
+                id: user.id,
+                username: user.username,
+                role: user.role
             }
             const token = jwt.sign(payload, 'myPersonalProject', { expiresIn: '1h' })
             res.status(200).send({ token: token })

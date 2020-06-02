@@ -1,14 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col } from 'antd'
 import '../../style/BodyPage/People.css'
 import { Link } from 'react-router-dom'
 import NavbarBody from './NavbarBody'
 import Sidebar from './Sidebar'
+import jwtDecode from 'jwt-decode'
+import axios from '../../config/axios'
 
 export default function People() {
+    const [person, setPerson] = useState('')
+    const token = localStorage.getItem('ACCESS_TOKEN');
+    const decode = jwtDecode(token)
+
+    const fetchData = async () => {
+        const result = await axios.get('/person')
+        setPerson(result.data)
+    }
+
+    useEffect(() => {
+        fetchData();
+    })
+
     return (
         <div>
-            <NavbarBody />
+            <NavbarBody username={decode.username}/>
             <Sidebar />
             <div className="people">
                 <Row className="head">

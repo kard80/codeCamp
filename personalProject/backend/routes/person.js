@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
-
+const jwtDecode = require('jwt-decode')
+const auth = require('../config/authorize')
 
 router.get('/', (req, res) => {
-    db.findAll();
+    const token = localStorage.getItem('ACCESS_TOKEN')
+    const decode = jwtDecode(token)
+    const person = db.findOne({where: {id: decode.id}})
+
+    res.status(200).send(person)
+})
+
+
+router.get('/admin', auth, (req, res) => {
+    const person = db.findAll();
+
+    res.status(200).send(person)
 })
 
 router.post('/', (req, res) => {

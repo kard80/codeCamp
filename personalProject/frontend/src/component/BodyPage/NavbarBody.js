@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Row } from 'antd'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import '../../style/BodyPage/NavbarBody.css'
 import axios from '../../config/axios'
 
 
-export default function NavbarBody() {
+
+export default function NavbarBody(props) {
     const [signOut, setSignOut] = useState(false)
 
     const signOutFnc = () => {
         localStorage.removeItem('ACCESS_TOKEN')
     }
-
-    useEffect(() => {
-        
-    },[])
+        // const token = localStorage.getItem('ACCESS_TOKEN');
+        // const decode = jwtDecode(token)
 
     return (
         <div className="navBarBody">
@@ -23,10 +22,10 @@ export default function NavbarBody() {
                     <h1>Super Hr</h1>
                 </Col>
                 <Col className="containerSubClass">
-                    <p>name</p>
-                    <img src="https://image.freepik.com/free-vector/businessman-profile-cartoon_18591-58479.jpg" onClick = {() => setSignOut(!signOut)} />
+                    <p>{props.username}</p>
+                    <img src="https://image.freepik.com/free-vector/businessman-profile-cartoon_18591-58479.jpg" onClick={() => setSignOut(!signOut)} />
                     <Row>
-                        {signOut && <Col className = "signOut"><Link to="/home"><button onClick={signOutFnc}>Sign out</button></Link></Col>}
+                        {signOut && <Col className="signOut"><Link to="/home"><button onClick={signOutFnc}>Sign out</button></Link></Col>}
                     </Row>
                 </Col>
             </Row>

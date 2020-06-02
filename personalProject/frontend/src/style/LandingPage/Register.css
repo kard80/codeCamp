@@ -64,3 +64,14 @@
     border: none;
     border: solid 1px rgb(164, 164, 164);
 }
+
+.register .container .userType {
+    width: 300px;
+    flex-direction: row;
+}
+
+.register .container .userType label, .register .container .userType input {
+    justify-self: flex-start;
+    align-self: flex-start;
+    width: 20px;
+}
