@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import '../../style/LandingPage/NavBar.css'
 import '../../style/LandingPage/Login.css'
 import Login from './Login'
+import {Link} from 'react-scroll'
 
 export default function NavBar(props) {
     const [login, setLogin] = useState(false)

@@ -5,14 +5,14 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport')
 
-const auth = passport.authenticate('jwt', {session: false})
-
 router.post('/register', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const role = req.body.role;
 
-    const checkUser = await db.user.findOne({ where: { username: username } })
+    const {count, row} = await db.user.findAndCountAll()
+
+    const checkUser = await db.user.findOne({ where: { username, } })
     if (checkUser) {
         res.status(400).send({ message: 'username already used' })
     } else {
@@ -23,11 +23,17 @@ router.post('/register', async (req, res) => {
             username,
             password: hashedPassword,
             role,
+            userId: String(Number(count + 1))
+            
         })
-
+        await db.person.create({
+            name: username,
+            userId: String(Number(count + 1)),
+        })
         res.status(200).send({ message: 'user created' })
     }
 })
+
 
 router.post('/login', async (req, res) => {
     const username = req.body.username;
@@ -48,8 +54,8 @@ router.post('/login', async (req, res) => {
                 role: user.role
             }
             const token = jwt.sign(payload, 'myPersonalProject', { expiresIn: '1h' })
-            res.status(200).send({ token: token })
-            res.status(200).send({message: 'login completed'})
+            res.status(200).send(token)
+            // res.status(200).send({ message: 'login completed' })
         }
     }
 })

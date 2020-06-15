@@ -8,39 +8,37 @@ import jwtDecode from 'jwt-decode'
 import axios from '../../config/axios'
 
 export default function People() {
-    const [person, setPerson] = useState('')
-    const token = localStorage.getItem('ACCESS_TOKEN');
-    const decode = jwtDecode(token)
+    const [person, setPerson] = useState([])
+
+    const payload = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const fetchData = async () => {
-        const result = await axios.get('/person')
+        const result = await axios.get(`/person/${payload.id}`)
         setPerson(result.data)
     }
 
     useEffect(() => {
         fetchData();
-    })
+    }, [])
 
     return (
         <div>
-            <NavbarBody username={decode.username}/>
+            <NavbarBody />
             <Sidebar />
             <div className="people">
                 <Row className="head">
                     <table>
                         <tr>
-                            <th>Name</th>
+                            <th>name</th>
                             <th>Job Position</th>
                             <th>Department</th>
-                            <th>Supervisor</th>
                             <th>Status</th>
                         </tr>
                         <tr>
-                            <td><Link to="/people/general">Mike Jordan</Link></td>
-                            <td>Digital marketing</td>
-                            <td>Marketing</td>
-                            <td>Tony alba</td>
-                            <td>Active</td>
+                            <td><Link to="/people/general">{person.name} {person.surname}</Link></td>
+                            <td>{person.jobTitle}</td>
+                            <td>Department</td>
+                            <td>{person.status}</td>
                         </tr>
 
                     </table>

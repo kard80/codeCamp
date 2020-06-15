@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         }
     })
+    user.associate = models => {
+        user.hasOne(models.person, {foreignKey: 'userId'})
+    }
 
     return user
 }

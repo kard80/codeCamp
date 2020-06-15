@@ -5,7 +5,13 @@ const db = require('../models');
 
 router.get('/', async (req, res) => {
     const leave = await db.leave.findAll();
-    res.send(leave)
+    res.status(200).send(leave)
+})
+
+router.get('/:id', async (req, res) => {
+    const personId = req.params.id;
+    const leaveByOne = await db.leave.findAll({where: {personId,}})
+    res.status(200).send(leaveByOne)
 })
 
 router.post('/', async (req, res) => {
@@ -15,12 +21,13 @@ router.post('/', async (req, res) => {
     const timeStartDate = req.body.timeStartDate;
     const timeEndDate = req.body.timeEndDate;
     const reason = req.body.reason;
+    const personId = req.body.personId;
 
     const startDateCalculation = new Date(startDate);
     const endDateCalculation = new Date(endDate);
     const oneDay = 24 * 60 * 60 * 1000
 
-    const totalDate = Math.round(Math.abs((startDateCalculation - endDateCalculation) / oneDay))
+    const totalDate = Math.round(Number(((endDateCalculation - startDateCalculation) / oneDay) + 1))
 
 
     db.leave.create({
@@ -30,7 +37,8 @@ router.post('/', async (req, res) => {
         timeStartDate,
         timeEndDate,
         reason,
-        totalDate
+        totalDate,
+        personId
     })
 
         .then(result => {
@@ -39,7 +47,6 @@ router.post('/', async (req, res) => {
             res.status(400).send(err)
         })
 })
-
 
 
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../../style/BodyPage/PeopleSub/General.css'
 import PeopleSub from './PeopleSub'
 import Information from './Information'
 import axios from '../../../config/axios';
+import jwtDecode from 'jwt-decode'
 
 export default function General() {
     const [name, setName] = useState('');
@@ -15,12 +16,12 @@ export default function General() {
     const [IDNumber, setIDNumber] = useState('');
     const [contactNumber, setContactNumber] = useState('');
     const [address, setAddress] = useState('');
-        
+
     const [employeeCode, setEmployeeCode] = useState('');
     const [workingStartDate, setWorkingStartDate] = useState('');
     const [probationEndDate, setProbationEndDate] = useState('');
     const [jobTitle, setJobTitle] = useState('');
-    const [department, setDepartment] =useState('');
+    const [department, setDepartment] = useState('');
     const [employeeType, setEmployeeType] = useState('');
     const [employeeStatus, setEmployeeStatus] = useState('');
     const [manager, setManager] = useState('');
@@ -32,10 +33,46 @@ export default function General() {
     const [accountName, setAccountName] = useState('');
     const [compensationType, setCompensationType] = useState('');
     const [salary, setSalary] = useState('');
-    
-    const [general, setGeneral] = useState(false)
+
+    const [profile, setProfile] = useState([])
+    const token = jwtDecode(localStorage.getItem("ACCESS_TOKEN"))
+
+    const fetchData = async () => {
+        const result = await axios.get(`/person/${token.id}`)
+        setProfile(result.data)
+        setName(result.data.name)
+        setSurname(result.data.surname)
+        setEmail(result.data.email)
+        setGender(result.data.gender)
+        setDateOfBirth(result.data.dateOfBirth)
+        setMartialStatus(result.data.martialStatus)
+        setNationality(result.data.nationality)
+        setIDNumber(result.data.IDNumber)
+        setContactNumber(result.data.contactNumber)
+        setAddress(result.data.address)
+        setEmployeeCode(result.data.employeeCode)
+        setWorkingStartDate(result.data.workingStartDate)
+        setProbationEndDate(result.data.probationEndDate)
+        setJobTitle(result.data.jobTitle)
+        setDepartment(result.data.department)
+        setEmployeeType(result.data.employeeType)
+        setEmployeeStatus(result.data.employeeStatus)
+        setResignationDate(result.data.resignationDate)
+        setResignationReason(result.data.resignationReason)
+        setTaxID(result.data.taxID)
+        setAccountNO(result.data.accountNO)
+        setAccountName(result.data.accountName)
+        setCompensationType(result.data.compensationType)
+        setSalary(result.data.salary)
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    const [general, setGeneral] = useState(true)
     const [info, setInfo] = useState(false)
-    const [compensation, setCompensation] = useState(true)
+    const [compensation, setCompensation] = useState(false)
 
     const generalClick = () => {
         setGeneral(true)
@@ -53,42 +90,48 @@ export default function General() {
         setCompensation(true)
     }
 
+
     const sendData = async () => {
-        console.log('function is running')
         const body = {
             name,
-            // surname,
-            // email,
-            // gender,
-            // dateOfBirth,
-            // martialStatus,
-            // nationality,
-            // IDNumber,
-            // contactNumber,
-            // address,
+            surname,
+            email,
+            gender,
+            dateOfBirth,
+            martialStatus,
+            nationality,
+            IDNumber,
+            contactNumber,
+            address,
 
-            // employeeCode,
-            // workingStartDate,
-            // probationEndDate,
-            // jobTitle,
-            // department,
-            // employeeType,
-            // employeeStatus,
-            // manager,
-            // resignationDate,
-            // resignationReason,
+            employeeCode,
+            workingStartDate,
+            probationEndDate,
+            jobTitle,
+            department,
+            employeeType,
+            employeeStatus,
+            manager,
+            resignationDate,
+            resignationReason,
 
-            // taxID,
-            // accountNO,
-            // accountName,
-            // compensationType,
-            // salary,
+            taxID,
+            accountNO,
+            accountName,
+            compensationType,
+            salary,
         }
-        await axios.post('/person', body)
+        await axios.put(`/person/${token.id}`, body)
+        await fetchData();
+        alert('Update completed')
     }
+
+
     return (
         <div>
-            <PeopleSub />
+            <PeopleSub name={profile.name} surname={profile.surname} jobTitle={profile.jobTitle}
+                contactNumber={profile.contactNumber} email={profile.email}
+            />
             <div className="General">
                 <div className="sidebarPersonal">
                     <ul>
@@ -130,8 +173,8 @@ export default function General() {
                                 <br />
                                 <select value={gender} onChange={e => setGender(e.target.value)}>
                                     <option value="">--select--</option>
-                                    <option>Male</option>
-                                    <option>Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div id="item6">
@@ -182,7 +225,7 @@ export default function General() {
                             <div id="item2">
                                 <label>Employee code</label>
                                 <br />
-                                <input value={employeeCode} onChange={e => setEmployeeCode(e.target.value)}/>
+                                <input value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} />
                             </div>
                             <div id="item3">
                                 <label>Working start date</label>
@@ -197,12 +240,12 @@ export default function General() {
                             <div id="item5">
                                 <label>Job title</label>
                                 <br />
-                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)}/>
+                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
                             </div>
                             <div id="item6">
                                 <label>Department</label>
                                 <br />
-                                <input value={department} onChange={e => setDepartment(e.target.value)}/>
+                                <input value={department} onChange={e => setDepartment(e.target.value)} />
                             </div>
                             <div id="item7">
                                 <label>Employee type</label>
@@ -245,44 +288,44 @@ export default function General() {
                             <div id="item11">
                                 <label>Resignation reason</label>
                                 <br />
-                                <input value={resignationReason} onChange={e => setResignationReason(e.target.value)}/>
+                                <input value={resignationReason} onChange={e => setResignationReason(e.target.value)} />
                             </div>
                         </div>
                     </div>
                 )}
                 {compensation && (
                     <div className="gridContainer">
-                    <div className="gridItem">
-                        <div id="item1">
-                            <h1>Compensation</h1>
-                        </div>
-                        <div id="item2">
-                            <label>Tax ID</label>
-                            <br />
-                            <input value={taxID} onChange={e => setTaxID(e.target.value)}/>
-                        </div>
-                        <div id="item3">
-                            <label>Account No.</label>
-                            <br />
-                            <input value={accountNO} onChange={e => setAccountNO(e.target.value)}/>
-                        </div>
-                        <div id="item4">
-                            <label>Account name</label>
-                            <br />
-                            <input value={accountName} onChange={e => setAccountName(e.target.value)}/>
-                        </div>
-                        <div id="item5">
-                            <label>Compensation type</label>
-                            <br />
-                            <input value={compensationType} onChange={e => setCompensationType(e.target.value)}/>
-                        </div>
-                        <div id="item6">
-                            <label>Salary</label>
-                            <br />
-                            <input value={salary} onChange={e => setSalary(e.target.value)}/>
+                        <div className="gridItem">
+                            <div id="item1">
+                                <h1>Compensation</h1>
+                            </div>
+                            <div id="item2">
+                                <label>Tax ID</label>
+                                <br />
+                                <input value={taxID} onChange={e => setTaxID(e.target.value)} />
+                            </div>
+                            <div id="item3">
+                                <label>Account No.</label>
+                                <br />
+                                <input value={accountNO} onChange={e => setAccountNO(e.target.value)} />
+                            </div>
+                            <div id="item4">
+                                <label>Account name</label>
+                                <br />
+                                <input value={accountName} onChange={e => setAccountName(e.target.value)} />
+                            </div>
+                            <div id="item5">
+                                <label>Compensation type</label>
+                                <br />
+                                <input value={compensationType} onChange={e => setCompensationType(e.target.value)} />
+                            </div>
+                            <div id="item6">
+                                <label>Salary</label>
+                                <br />
+                                <input value={salary} onChange={e => setSalary(e.target.value)} />
+                            </div>
                         </div>
                     </div>
-                </div>
                 )}
             </div>
         </div>

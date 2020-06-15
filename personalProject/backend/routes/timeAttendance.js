@@ -8,6 +8,12 @@ router.get('/', async (req, res) => {
     res.send(timeAttendance)
 })
 
+router.get('/:id', async (req, res) => {
+    const personId = req.params.id;
+    const timeAttendance = await db.timeAttendance.findAll({where: {personId,}})
+    res.status(200).send(timeAttendance);
+})
+
 router.post('/', (req, res) => {
     const date = new Date;
 
@@ -18,12 +24,12 @@ router.post('/', (req, res) => {
     const minute = date.getMinutes().length === 1 ? '0' + String(date.getMinutes()) : String(date.getMinutes());
     const clockIn = `${hour}.${minute}`
 
-    const remark = req.body.remark;
+    const personId = req.body.personId;
 
     db.timeAttendance.create({
         date: `${month[date.getMonth()]} ${day}`,
         clockIn,
-        remark,
+        personId,
 
     })
 
@@ -36,12 +42,12 @@ router.post('/', (req, res) => {
 
 router.put('/', async (req, res) => {
     const date = new Date;
-    const hour = date.getHours().length === 1 ? '0' + date.getHours() : String(date.getHours());
-    const minute = date.getMinutes().length === 1 ? '0' + date.getMinutes() : String(date.getMinutes());
+    const hour = date.getHours().length === 1 ? '0' + String(date.getHours()) : String(date.getHours());
+    const minute = date.getMinutes().length === 1 ? '0' + String(date.getMinutes()) : String(date.getMinutes());
 
     const id = req.body.id
 
-    const remark = req.body.remark
+    const remark = req.body.remark;
 
     const check = await db.timeAttendance.findOne({ where: { id: id } })
 
@@ -57,13 +63,9 @@ router.put('/', async (req, res) => {
         const minuteFraction = calculate % 60;
         const resultHour = Math.floor(calculate / 60)
         const resultMinute = minuteFraction === 1? '0' + String(minuteFraction):  minuteFraction
-
-        
         
         return `${resultHour}.${resultMinute}`
     }
-
-
     await db.timeAttendance.update({
         clockOut: `${hour}.${minute}`,
         remark,

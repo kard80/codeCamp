@@ -3,24 +3,65 @@ import '../../style/BodyPage/Timestamp.css'
 import NavbarBody from './NavbarBody'
 import Sidebar from './Sidebar'
 import axios from '../../config/axios'
+import jwtDecode from 'jwt-decode'
 
 export default function Timestamp() {
     const [timeAttendance, setTimeAttendance] = useState([]);
+    const [dropdown, setDropdown] = useState([])
+    const [dropdownValue, setDropdownValue] = useState('')
     const searchNull = timeAttendance.some(el => el.clockOut === null)
+
+    const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
+
+    const fetchData = async () => {
+        const result = await axios.get(`/timeAttendance/${token.id}`);
+        setTimeAttendance(result.data)
+    }
 
 
     useEffect(() => {
         fetchData();
     }, [])
 
-    const fetchData = async () => {
-        const result = await axios.get('/timeAttendance');
-        setTimeAttendance(result.data)
+    useEffect(() => {
+        dropdownInsert()
+    }, [timeAttendance])
+
+    const dropdownInsert = () => {
+        let arr = []
+        for (let i = 0; i < timeAttendance.length; i++) {
+            let year = timeAttendance[i].createdAt.substring(0, 4)
+            let month = timeAttendance[i].createdAt.substring(5, 7)
+            arr = [...arr, `${year}-${month}`]
+        }
+        let sendArr = [...new Set(arr)]
+        setDropdown(sendArr)
+    }
+
+    const requestData = () => {
+        let arr = [];
+        for (let i = 0; i < timeAttendance.length; i++) {
+            if (timeAttendance[i].createdAt.substring(0, 7) === dropdownValue) {
+                arr = [...arr, (
+                    <tr>
+                        <td>{timeAttendance[i].date}</td>
+                        <td>{timeAttendance[i].clockIn}</td>
+                        <td>{timeAttendance[i].clockOut}</td>
+                        <td>{timeAttendance[i].workingTime}</td>
+                        <td>{timeAttendance[i].remark}</td>
+                    </tr>
+                )]
+            }
+        }
+        return arr
     }
 
     const clickClockIn = async () => {
+        const body = {
+            personId: token.id
+        }
         alert('Clock-in completed')
-        await axios.post('/timeAttendance')
+        await axios.post('/timeAttendance', body)
         fetchData();
     }
 
@@ -31,6 +72,7 @@ export default function Timestamp() {
         const body = {
             id,
             remark,
+            personId: token.id,
         }
         await axios.put('/timeAttendance', body)
         fetchData();
@@ -42,10 +84,13 @@ export default function Timestamp() {
             <Sidebar />
             <div className="timestamp">
                 <div className="head">
-                    <select>
-                        <option>2020 Apr</option>
-                        <option>Good</option>
-                        <option>Morning</option>
+                    <select value={dropdownValue} onChange={e => setDropdownValue(e.target.value)}>
+                        <option>--Select--</option>
+                        {dropdown.map(item => (
+                            item === dropdown.sort().reverse()[0] ?
+                                <option selected>{item}</option> :
+                                <option>{item}</option>
+                        ))}
                     </select>
                     {searchNull ?
                         <button onClick={clickClockOut}>Clock-out</button> :
@@ -61,15 +106,7 @@ export default function Timestamp() {
                             <th>Working Time</th>
                             <th>Remark</th>
                         </tr>
-                        {timeAttendance.map(item => (
-                            <tr>
-                                <td>{item.date}</td>
-                                <td>{item.clockIn}</td>
-                                <td>{item.clockOut}</td>
-                                <td>{item.workingTime}</td>
-                                <td>{item.remark}</td>
-                            </tr>
-                        ))}
+                        {requestData()}
                     </table>
                 </div>
             </div>

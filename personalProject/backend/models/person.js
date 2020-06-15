@@ -23,16 +23,16 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         IDNumber: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         contactNumber: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         address: {
             type: DataTypes.STRING
         },
         employeeCode: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         },
         workingStartDate: {
             type: DataTypes.DATE
@@ -52,9 +52,6 @@ module.exports = (sequelize, DataTypes) => {
         employeeStatus: {
             type: DataTypes.STRING
         },
-        manager: {
-            type: DataTypes.STRING
-        },
         resignationDate: {
             type: DataTypes.DATE
         },
@@ -62,10 +59,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         taxID: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         accountNO: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         },
         accountName: {
             type: DataTypes.STRING
@@ -74,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         salary: {
-            type: DataTypes.INTEGER
+            type: DataTypes.STRING
         }
     })
     person.associate = models => {
@@ -82,7 +79,8 @@ module.exports = (sequelize, DataTypes) => {
         person.hasMany(models.timeAttendance, {foreignKey: "personId"})
         
         person.belongsTo(models.position, {foreignKey: "positionId"})
-        person.belongsTo(models.department)
+        person.belongsTo(models.department, {foreignKey: 'departmentId'})
+        person.belongsTo(models.user, {foreignKey: 'userId'})
     }
 
     return person

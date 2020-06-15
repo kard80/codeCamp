@@ -17,9 +17,11 @@ export default function Login(props) {
             password
         }
         const result = await axios.post('/user/login', body);
-        localStorage.setItem("ACCESS_TOKEN", result.data.token)
+        localStorage.setItem('ACCESS_TOKEN', result.data)
         setIsLogin(true)
     }
+
+
     return (
         <div className="login">
             <div className="block">

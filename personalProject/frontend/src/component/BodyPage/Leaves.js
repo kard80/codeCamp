@@ -3,6 +3,7 @@ import '../../style/BodyPage/Leaves.css'
 import NavbarBody from './NavbarBody'
 import Sidebar from './Sidebar'
 import axios from '../../config/axios'
+import jwtDecode from 'jwt-decode'
 
 export default function Leaves() {
     const [type, setType] = useState('')
@@ -14,6 +15,77 @@ export default function Leaves() {
 
     const [leave, setLeave] = useState([])
 
+    const [annualLeave, setAnnualLeave] = useState(10)
+    const [leaveWithoutPay, setLeaveWithoutPay] = useState(0)
+    const [maternityLeave, setMaternityLeave] = useState(90)
+    const [personalLeave, setPersonalLeave] = useState(0)
+    const [sickLeave, setSickLeave] = useState(30)
+
+    const [dropdown, setDropdown] = useState([])
+    const [dropdownValue, setDropdownValue] = useState('')
+    const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
+
+    const leaveCountFnc = () => {
+        let sumWithoutPay = 0
+        let sumMaternity = 90
+        let sumPersonal = 0
+        let sumSick = 30
+        let sumAnnual = 10
+
+        for (let i = 0; i < leave.length; i++) {
+            if (leave[i].type === 'Leave without pay') {
+                sumWithoutPay += Number(leave[i].totalDate)
+            } else if (leave[i].type === 'Maternity Leave') {
+                sumMaternity -= Number(leave[i].totalDate)
+            } else if (leave[i].type === 'Personal Leave') {
+                sumPersonal += Number(leave[i].totalDate)
+            } else if (leave[i].type === 'Sick') {
+                sumSick -= Number(leave[i].totalDate)
+            } else if (leave[i].type === 'Annual Leave') {
+                sumAnnual -= Number(leave[i].totalDate)
+            }
+        }
+        setLeaveWithoutPay(sumWithoutPay)
+        setMaternityLeave(sumMaternity)
+        setPersonalLeave(sumPersonal)
+        setSickLeave(sumSick)
+        setAnnualLeave(sumAnnual)
+    }
+
+    const requestData = () => {
+        let arr = []
+        for (let i = 0; i < leave.length; i++) {
+            if (leave[i].startDate.substring(0, 7) === dropdownValue) {
+                arr =  [...arr, (
+                    <tr>
+                        <td>{leave[i].type}</td>
+                        <td>
+                            {leave[i].startDate}
+                            {leave[i].timeStartDate}
+                        </td>
+                        <td>
+                            {leave[i].endDate}
+                            {leave[i].timeEndDate}
+                        </td>
+                        <td>{leave[i].totalDate}</td>
+                        <td>{leave[i].reason}</td>
+                    </tr>
+                )]
+            }
+        }
+        return arr
+    }
+
+    const dropdownInsert = () => {
+        let arr = [];
+        for (let i = 0; i < leave.length; i++) {
+            let year = leave[i].startDate.substring(0, 4);
+            let month = leave[i].startDate.substring(5, 7);
+            arr = [...arr, `${year}-${month}`]
+        }
+        let sendArr = [...new Set(arr)]
+        setDropdown(sendArr)
+    }
 
     const sendData = async () => {
         const body = {
@@ -22,7 +94,8 @@ export default function Leaves() {
             endDate,
             timeStartDate,
             timeEndDate,
-            reason
+            reason,
+            personId: token.id,
         }
         let makeSure = window.confirm('Are you sure to send this?')
         if (makeSure) await axios.post('/leave', body)
@@ -34,17 +107,23 @@ export default function Leaves() {
         setEndDate('')
         setReason('')
 
-        fetchData();
+        fetchData()
     }
 
     const fetchData = async () => {
-        const result = await axios.get('/leave');
+        const result = await axios.get(`/leave/${token.id}`);
         setLeave(result.data)
+        console.log(result.data)
     }
 
     useEffect(() => {
         fetchData();
     }, [])
+
+    useEffect(() => {
+        leaveCountFnc();
+        dropdownInsert();
+    }, [leave])
 
     return (
         <div>
@@ -60,23 +139,23 @@ export default function Leaves() {
                                 </tr>
                                 <tr>
                                     <td>Annual leaves</td>
-                                    <td>9/10</td>
+                                    <td>{annualLeave}/10</td>
                                 </tr>
                                 <tr>
                                     <td>Sick leaves</td>
-                                    <td>15/30</td>
+                                    <td>{sickLeave}/30</td>
                                 </tr>
                                 <tr>
                                     <td>Leaves without pay</td>
-                                    <td>0</td>
+                                    <td>{leaveWithoutPay}</td>
                                 </tr>
                                 <tr>
                                     <td>Person leaves</td>
-                                    <td>5</td>
+                                    <td>{personalLeave}</td>
                                 </tr>
                                 <tr>
                                     <td>Parental leaves</td>
-                                    <td>90/90</td>
+                                    <td>{maternityLeave}/90</td>
                                 </tr>
                             </table>
                         </div>
@@ -84,9 +163,9 @@ export default function Leaves() {
                     <div className="history">
                         <div>
                             <h1>Request History</h1>
-                            <select>
-                                <option>2020 - Apr</option>
-                                <option>2020 - Mar</option>
+                            <select onChange={e => setDropdownValue(e.target.value)} value={dropdownValue}>
+                                <option>--Select--</option>
+                                {dropdown.sort().reverse().map(item => <option value={item} >{item}</option>)}
                             </select>
                             <table>
                                 <tr>
@@ -96,21 +175,7 @@ export default function Leaves() {
                                     <th>Total date</th>
                                     <th>reason</th>
                                 </tr>
-                                {leave.map(item => (
-                                    <tr>
-                                        <td>{item.type}</td>
-                                        <td>
-                                            {item.startDate}
-                                            {item.timeStartDate}
-                                        </td>
-                                        <td>
-                                            {item.endDate}
-                                            {item.timeEndDate}
-                                        </td>
-                                        <td>{item.totalDate}</td>
-                                        <td>{item.reason}</td>
-                                    </tr>
-                                ))}
+                                {requestData()}
                             </table>
                         </div>
                     </div>
@@ -121,8 +186,9 @@ export default function Leaves() {
                         <div>
                             <label>Leave type*</label>
                             <br />
-                            <select onChange={e => setType(e.target.value)} required>
-                                <option >--Select--</option>
+                            <select value={type} onChange={e => setType(e.target.value)}>
+                                <option>--Select--</option>
+                                <option value="Annual Leave">Annual Leave</option>
                                 <option value="Leave without pay">Leave without pay</option>
                                 <option value="Maternity Leave">Maternity Leave</option>
                                 <option value="Personal Leave">Personal Leave</option>
@@ -144,11 +210,7 @@ export default function Leaves() {
                         <div>
                             <label>End date*</label>
                             <br />
-                            <input type="date" onChange={e => setEndDate(e.target.value)} required />
-                            {/* <select>
-                                <option>--Select--</option>
-                                <option></option>
-                            </select> */}
+                            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required />
                             <br />
                             <input type="radio" id="radioEndDay" name="endDate" value="All day" onChange={e => setTimeEndDate(e.target.value)} required></input>
                             <label for="radioEndDay">All day</label>
@@ -160,10 +222,11 @@ export default function Leaves() {
                         <div>
                             <label>Reason</label>
                             <br />
-                            <textarea onChange={e => setReason(e.target.value)}></textarea>
+                            <textarea value={reason} onChange={e => setReason(e.target.value)}></textarea>
                         </div>
                         <div>
                             <input type="submit" onClick={sendData} />
+                            <button onClick={() => console.log(dropdown)}>Console</button>
                         </div>
                     </div>
                 </div>

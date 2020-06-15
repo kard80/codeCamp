@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
-const jwtDecode = require('jwt-decode')
 const auth = require('../config/authorize')
 
-router.get('/', (req, res) => {
-    const token = localStorage.getItem('ACCESS_TOKEN')
-    const decode = jwtDecode(token)
-    const person = db.findOne({where: {id: decode.id}})
+router.get('/', async (req, res) => {
+    const personGet = await db.person.findAll();
+    res.status(200).send(personGet)
+})
 
-    res.status(200).send(person)
+router.get('/:id', async (req, res) => {
+    const id = req.params.id;
+    const personGet = await db.person.findOne({ where: { id, } })
+    res.status(200).send(personGet)
 })
 
 
@@ -19,32 +21,129 @@ router.get('/admin', auth, (req, res) => {
     res.status(200).send(person)
 })
 
-router.post('/', (req, res) => {
-    const name = req.body.name
-    db.person.create({
-        name,
-    })
+// router.post('/', (req, res) => {
+//     const name = req.body.name;
+//     const surname = req.body.surname;
+//     const email = req.body.email;
+//     const gender = req.body.gender;
+//     const dateOfBirth = req.body.dateOfBirth;
+//     const martialStatus = req.body.martialStatus;
+//     const nationality = req.body.nationality;
+//     const IDNumber = req.body.IDNumber;
+//     const contactNumber = req.body.contactNumber;
+//     const address = req.body.address;
+//     const employeeCode = req.body.employeeCode;
+//     const workingStartDate = req.body.workingStartDate;
+//     const probationEndDate = req.body.probationEndDate;
+//     const jobTitle = req.body.jobTitle;
+//     const department = req.body.department;
+//     const employeeType = req.body.employeeType;
+//     const employeeStatus = req.body.employeeStatus;
+//     const manager = req.body.manager;
+//     const resignationDate = req.body.resignationDate;
+//     const resignationReason = req.body.resignationReason;
+//     db.person.create({
+//         name,
+//         surname,
+//         email,
+//         gender,
+//         dateOfBirth,
+//         martialStatus,
+//         nationality,
+//         IDNumber,
+//         contactNumber,
+//         address,
+
+//         employeeCode,
+//         workingStartDate,
+//         probationEndDate,
+//         jobTitle,
+//         department,
+//         employeeType,
+//         employeeStatus,
+//         manager,
+//         resignationDate,
+//         resignationReason,
+
+//         taxID,
+//         accountNO,
+//         accountName,
+//         compensationType,
+//         salary,
+//     })
+
+//         .then(result => {
+//             res.status(200).send(result)
+//         }).catch(err => {
+//             res.status(400).send(err)
+//         })
+// })
+
+router.put('/:id', (req, res) => {
+    const id = req.params.id
+    const name = req.body.name;
+    const surname = req.body.surname;
+    const email = req.body.email;
+    const gender = req.body.gender;
+    const dateOfBirth = req.body.dateOfBirth;
+    const martialStatus = req.body.martialStatus;
+    const nationality = req.body.nationality;
+    const IDNumber = req.body.IDNumber;
+    const contactNumber = req.body.contactNumber;
+    const address = req.body.address;
+    const employeeCode = req.body.employeeCode;
+    const workingStartDate = req.body.workingStartDate;
+    const probationEndDate = req.body.probationEndDate;
+    const jobTitle = req.body.jobTitle;
+    const department = req.body.department;
+    const employeeType = req.body.employeeType;
+    const employeeStatus = req.body.employeeStatus;
+    const manager = req.body.manager;
+    const resignationDate = req.body.resignationDate;
+    const resignationReason = req.body.resignationReason;
+    const taxID = req.body.taxID;
+    const accountNO = req.body.accountNO;
+    const accountName = req.body.accountName;
+    const compensationType = req.body.compensationType;
+    const salary = req.body.salary;
     
-    .then(result => {
-        res.status(200).send(result)
-    }).catch(err => {
-        res.status(400).send(err)
-    })
+    db.person.update({ 
+        name,
+        surname,
+        email,
+        gender,
+        dateOfBirth,
+        martialStatus,
+        nationality,
+        IDNumber,
+        contactNumber,
+        address,
+        employeeCode,
+        workingStartDate,
+        probationEndDate,
+        jobTitle,
+        department,
+        employeeType,
+        employeeStatus,
+        resignationDate,
+        resignationReason,
+        taxID,
+        accountNO,
+        accountName,
+        compensationType,
+        salary,
+     }, { where: { id: id } })
+        .then(result => {
+            res.status(200).send(result)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
 })
 
-router.put('/', (req,res) => {
-    const variable = req.body.edit;
-    const id = req.body.id
-    db.department.update({data: variable}, {where: {id: id}}).then(result => {
-        res.status(200).send(result)
-    }).catch(err => {
-        res.status(400).send(err)
-    })
-})
-
-router.delete('/', (req,res) => {
+router.delete('/:id', (req, res) => {
     const id = req.params.id;
-    db.person.destroy({where: {id: id}}).then(result => {
+    db.person.destroy({ where: { id: id } })
+    .then(result => {
         res.status(200).send(result);
     }).catch(err => {
         res.status(400).send(err)
