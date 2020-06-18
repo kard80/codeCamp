@@ -10,11 +10,17 @@ import axios from '../../config/axios'
 export default function People() {
     const [person, setPerson] = useState([])
 
-    const payload = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
+    const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const fetchData = async () => {
-        const result = await axios.get(`/person/${payload.id}`)
-        setPerson(result.data)
+        if (token.role === 'User') {
+            const result = await axios.get(`/person/${token.id}`)
+            setPerson(result.data)
+        } else {
+            const result = await axios.get(`/person`)
+            setPerson(result.data)
+        }
+
     }
 
     useEffect(() => {
@@ -34,13 +40,14 @@ export default function People() {
                             <th>Department</th>
                             <th>Status</th>
                         </tr>
-                        <tr>
-                            <td><Link to="/people/general">{person.name} {person.surname}</Link></td>
-                            <td>{person.jobTitle}</td>
-                            <td>Department</td>
-                            <td>{person.status}</td>
-                        </tr>
-
+                        {person.map(item => (
+                            <tr>
+                                <td><Link to="/people/general">{item.name} {item.surname}</Link></td>
+                                <td>{item.jobTitle}</td>
+                                <td>Department</td>
+                                <td>{item.status}</td>
+                            </tr>
+                        ))}
                     </table>
                 </Row>
             </div>

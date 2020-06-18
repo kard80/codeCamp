@@ -1,15 +1,15 @@
-import React, { useEffect, useState, usePrevious } from 'react'
-import { Col, Row } from 'antd'
+import React, { useEffect, useState } from 'react'
 import '../../style/LandingPage/Login.css'
-import NavBar from './NavBar'
 import { Link, Redirect } from 'react-router-dom'
 import axios from '../../config/axios'
+import jwtDecode from 'jwt-decode'
 
 export default function Login(props) {
     const { login, setLogin } = props
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(false);
+    // const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const loginFnc = async () => {
         const body = {
@@ -21,6 +21,16 @@ export default function Login(props) {
         setIsLogin(true)
     }
 
+    const checkRole = () => {
+        if (localStorage.getItem('ACCESS_TOKEN')) {
+            const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
+            if (token.role === 'User') {
+                return <Redirect to="/People" />
+            } else {
+                return <Redirect to="/people/admin" />
+            }
+        }
+    }
 
     return (
         <div className="login">
@@ -35,7 +45,7 @@ export default function Login(props) {
                         <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
                         <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                         <button className="buttonLogin" onClick={loginFnc}>Log in</button>
-                        {isLogin && <Redirect to="/People" />}
+                        {checkRole()}
                         <Link to="/register" className="createAccount"><p>Create administrative user</p></Link>
                     </div>
                 </div>

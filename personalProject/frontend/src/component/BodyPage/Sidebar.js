@@ -2,19 +2,27 @@ import React from 'react'
 import { Col, Row } from 'antd'
 import { Link, Route } from 'react-router-dom'
 import '../../style/BodyPage/Sidebar.css'
-import People from './People'
-import PeopleSub from '../BodyPage/PeopleSub/PeopleSub'
+import jwtDecode from 'jwt-decode'
 
 export default function Sidebar() {
+    const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
     return (
         <div className="sidebar">
             <Row>
                 <Col>
-                    <ul>
-                        <Link to="/People" className="sidebarMain"><li>People</li></Link>
-                        <Link to="/TimeStamp" className="sidebarMain"><li>Timestamp</li></Link>
-                        <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
-                    </ul>
+                    {token.role === 'User' ?
+                        <ul>
+                            <Link to="/People" className="sidebarMain"><li>People</li></Link>
+                            <Link to="/TimeStamp" className="sidebarMain"><li>Timestamp</li></Link>
+                            <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
+                        </ul>:
+                        <ul>
+                            <Link to="/People" className="sidebarMain"><li>People</li></Link>
+                            <Link to="/people/admin/department" className="sidebarMain"><li>Department</li></Link>
+                        </ul>
+                    
+                }
+
                 </Col>
             </Row>
         </div>

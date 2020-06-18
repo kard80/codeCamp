@@ -21,7 +21,7 @@ app.use('/position', position)
 app.use('/timeAttendance', timeAttendance)
 app.use('/user', user)
 
-db.sequelize.sync({ force: true })
+db.sequelize.sync({ force: false })
     .then(() => {
         app.listen(8000, () => {
             console.log('Server is running')

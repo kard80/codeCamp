@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Col, Row } from 'antd'
 import { Link } from 'react-router-dom'
 import '../../style/BodyPage/NavbarBody.css'
-import axios from '../../config/axios'
 import jwtDecode from 'jwt-decode'
-
-
 
 export default function NavbarBody(props) {
     const [signOut, setSignOut] = useState(false)
@@ -16,8 +13,6 @@ export default function NavbarBody(props) {
     const signOutFnc = () => {
         localStorage.removeItem('ACCESS_TOKEN')
     }
-        // const token = localStorage.getItem('ACCESS_TOKEN');
-        // const decode = jwtDecode(token)
 
     return (
         <div className="navBarBody">
