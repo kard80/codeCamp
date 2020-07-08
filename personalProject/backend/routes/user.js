@@ -27,6 +27,7 @@ router.post('/register', async (req, res) => {
             
         })
         await db.person.create({
+            id: String(Number(count + 1)),
             name: username,
             userId: String(Number(count + 1)),
         })
@@ -51,7 +52,8 @@ router.post('/login', async (req, res) => {
             const payload = {
                 id: user.id,
                 username: user.username,
-                role: user.role
+                role: user.role,
+
             }
             const token = jwt.sign(payload, 'myPersonalProject', { expiresIn: '1h' })
             res.status(200).send(token)

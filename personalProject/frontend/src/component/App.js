@@ -15,6 +15,8 @@ import Leaves from './BodyPage/Leaves'
 import RegisterAdmin from './LandingPage/RegisterAdmin'
 import BodyAdmin from './AdminBodyPage/BodyAdmin'
 import Department from './AdminBodyPage/Department'
+import TimestampAdmin from './AdminBodyPage/TimestampAdmin'
+import CreateDepartment from './AdminBodyPage/CreateDepartment'
 import * as Scroll from 'react-scroll'
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
           <Route exact path="/register/admin" component={RegisterAdmin} />
           <Route exact path="/people/admin" component={BodyAdmin} />
           <Route exact path="/people/admin/Department" component={Department} />
+          <Route exact path="/people/admin/Timestamp" component={TimestampAdmin} />
+          <Route exact path="/people/admin/CreateDepartment" component={CreateDepartment} />
           <ul>
             <li><Link to="/home">Homepage</Link></li>
             <li><Link to="/SuperHr">Body</Link></li>

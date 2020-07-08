@@ -13,15 +13,16 @@ export default function People() {
     const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const fetchData = async () => {
-        if (token.role === 'User') {
-            const result = await axios.get(`/person/${token.id}`)
-            setPerson(result.data)
+        if (token.role === 'Admin') {
+            let result = await axios.get(`/person`)
+            return setPerson(result.data)
         } else {
-            const result = await axios.get(`/person`)
-            setPerson(result.data)
+            let result = await axios.get(`/person/${token.id}`)
+            return setPerson([result.data])
         }
-
     }
+
+
 
     useEffect(() => {
         fetchData();
@@ -42,9 +43,13 @@ export default function People() {
                         </tr>
                         {person.map(item => (
                             <tr>
-                                <td><Link to="/people/general">{item.name} {item.surname}</Link></td>
+                                <td><Link to={{ pathname: "/people/general", id: item.id, }}>{item.name} {item.surname}</Link></td>
                                 <td>{item.jobTitle}</td>
-                                <td>Department</td>
+                                <td>{
+                                    typeof(item.departmentId) !== 'object'?
+                                    item.department.department:
+                                    ''
+                                }</td>
                                 <td>{item.status}</td>
                             </tr>
                         ))}

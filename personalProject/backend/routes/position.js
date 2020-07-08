@@ -3,14 +3,18 @@ const router = express.Router();
 const db = require('../models');
 
 
-router.get('/', (req, res) => {
-    db.findAll();
+router.get('/', async (req, res) => {
+    const position = await db.position.findAll();
+    res.status(200).send(position)
+
 })
 
 router.post('/', (req, res) => {
-    const variable = req.body.post
-    db.person.create({
-        data: variable
+    const position = req.body.position;
+    const departmentId = req.body.departmentId;
+    db.position.create({
+        position,
+        departmentId
     })
     
     .then(result => {

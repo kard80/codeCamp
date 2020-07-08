@@ -4,14 +4,19 @@ const db = require('../models');
 const auth = require('../config/authorize')
 
 router.get('/', async (req, res) => {
-    const personGet = await db.person.findAll();
+    const personGet = await db.person.findAll({
+        include: {model: db.department, attributes: ['department']},
+    });
     res.status(200).send(personGet)
 })
 
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
-    const personGet = await db.person.findOne({ where: { id, } })
-    res.status(200).send(personGet)
+    const personGetId = await db.person.findOne({ 
+        where: { userId: id, },
+        include: {model: db.department, attributes: ['department']}
+    })
+    res.status(200).send(personGetId)
 })
 
 
@@ -78,6 +83,16 @@ router.get('/admin', auth, (req, res) => {
 //             res.status(400).send(err)
 //         })
 // })
+
+router.put('/syncPosition', async (req, res) => {
+    const {id, positionId} =  req.body;
+    const departmentId =  await db.position.findOne({where: {id: positionId}, attributes: ['departmentId']})
+    db.person.update({
+        positionId,
+        departmentId: departmentId.departmentId,
+    }, {where: {id}})
+    res.status(200).send('Update completed')
+})
 
 router.put('/:id', (req, res) => {
     const id = req.params.id

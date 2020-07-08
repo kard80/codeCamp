@@ -4,7 +4,9 @@ const db = require('../models');
 
 
 router.get('/', async (req, res) => {
-    const timeAttendance = await db.timeAttendance.findAll();
+    const timeAttendance = await db.timeAttendance.findAll({
+        include: {model: db.person, attributes: ['name', 'surname']}
+    });
     res.send(timeAttendance)
 })
 
@@ -20,8 +22,11 @@ router.post('/', (req, res) => {
     const day = date.getDate();
     const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    const hour = date.getHours().length === 1 ? '0' + String(date.getHours()) : String(date.getHours());
-    const minute = date.getMinutes().length === 1 ? '0' + String(date.getMinutes()) : String(date.getMinutes());
+    const hourString = String(date.getHours())
+    const minuteString = String(date.getMinutes())
+
+    const hour = hourString.length === 1 ? '0' + hourString : hourString;
+    const minute = minuteString.length === 1 ? '0' + minuteString : minuteString;
     const clockIn = `${hour}.${minute}`
 
     const personId = req.body.personId;
@@ -42,14 +47,21 @@ router.post('/', (req, res) => {
 
 router.put('/', async (req, res) => {
     const date = new Date;
-    const hour = date.getHours().length === 1 ? '0' + String(date.getHours()) : String(date.getHours());
-    const minute = date.getMinutes().length === 1 ? '0' + String(date.getMinutes()) : String(date.getMinutes());
+
+    const hourString = String(date.getHours())
+    const minuteString = String(date.getMinutes())
+
+    const hour = hourString.length === 1 ? '0' + hourString : hourString;
+    const minute = minuteString === '00'? '00': minuteString.length === 1 ? '0' + minuteString : minuteString;
 
     const id = req.body.id
 
     const remark = req.body.remark;
 
-    const check = await db.timeAttendance.findOne({ where: { id: id } })
+    const check = await db.timeAttendance.findOne({
+         where: { id: id },
+         include: {model: db.person, attributes: ['name', 'surname']}
+        })
 
     const workingTime = () => {
         const splitClockIn = check.clockIn.split('.');
@@ -60,9 +72,10 @@ router.put('/', async (req, res) => {
         const clockOutTotalMinute = (Number(hour) * 60) + Number(minute);
 
         const calculate = clockOutTotalMinute - clockInTotalMinute;
-        const minuteFraction = calculate % 60;
+        const minuteFraction = String(calculate % 60);
         const resultHour = Math.floor(calculate / 60)
-        const resultMinute = minuteFraction === 1? '0' + String(minuteFraction):  minuteFraction
+
+        const resultMinute = minuteFraction === '00'? '00': minuteFraction.length === 1? '0' + minuteFraction:  minuteFraction
         
         return `${resultHour}.${resultMinute}`
     }

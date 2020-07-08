@@ -43,9 +43,6 @@ module.exports = (sequelize, DataTypes) => {
         jobTitle: {
             type: DataTypes.STRING
         },
-        // department: {
-        //     type: DataTypes.STRING
-        // },
         employeeType: {
             type: DataTypes.STRING
         },

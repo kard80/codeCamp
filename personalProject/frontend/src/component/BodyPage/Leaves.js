@@ -6,7 +6,7 @@ import axios from '../../config/axios'
 import jwtDecode from 'jwt-decode'
 
 export default function Leaves() {
-    const [type, setType] = useState('')
+    const [type, setType] = useState('Annual Leave')
     const [startDate, setStartDate] = useState('')
     const [timeStartDate, setTimeStartDate] = useState('')
     const [timeEndDate, setTimeEndDate] = useState('')
@@ -187,7 +187,6 @@ export default function Leaves() {
                             <label>Leave type*</label>
                             <br />
                             <select value={type} onChange={e => setType(e.target.value)}>
-                                <option>--Select--</option>
                                 <option value="Annual Leave">Annual Leave</option>
                                 <option value="Leave without pay">Leave without pay</option>
                                 <option value="Maternity Leave">Maternity Leave</option>
@@ -226,7 +225,6 @@ export default function Leaves() {
                         </div>
                         <div>
                             <input type="submit" onClick={sendData} />
-                            <button onClick={() => console.log(dropdown)}>Console</button>
                         </div>
                     </div>
                 </div>

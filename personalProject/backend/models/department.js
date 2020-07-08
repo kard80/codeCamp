@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
     department.associate = models => {
-        department.hasMany(models.position, {foreignKey: "positionId"})
-        department.hasMany(models.person, {foreignKey: "personId"})
+        department.hasMany(models.position, {foreignKey: "departmentId"})
+        department.hasMany(models.person, {foreignKey: "departmentId"})
     }
 
     return department

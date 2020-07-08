@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import '../../../style/BodyPage/PeopleSub/General.css'
 import PeopleSub from './PeopleSub'
-import Information from './Information'
 import axios from '../../../config/axios';
-import jwtDecode from 'jwt-decode'
 
-export default function General() {
+export default function General(props) {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
@@ -34,12 +32,8 @@ export default function General() {
     const [compensationType, setCompensationType] = useState('');
     const [salary, setSalary] = useState('');
 
-    const [profile, setProfile] = useState([])
-    const token = jwtDecode(localStorage.getItem("ACCESS_TOKEN"))
-
     const fetchData = async () => {
-        const result = await axios.get(`/person/${token.id}`)
-        setProfile(result.data)
+        const result = await axios.get(`/person/${props.location.id}`)
         setName(result.data.name)
         setSurname(result.data.surname)
         setEmail(result.data.email)
@@ -65,7 +59,7 @@ export default function General() {
         setCompensationType(result.data.compensationType)
         setSalary(result.data.salary)
     }
-
+    
     useEffect(() => {
         fetchData();
     }, [])
@@ -73,7 +67,7 @@ export default function General() {
     const [general, setGeneral] = useState(true)
     const [info, setInfo] = useState(false)
     const [compensation, setCompensation] = useState(false)
-
+    
     const generalClick = () => {
         setGeneral(true)
         setInfo(false)
@@ -91,60 +85,29 @@ export default function General() {
     }
 
 
-    const sendData = async () => {
-        const body = {
-            name,
-            surname,
-            email,
-            gender,
-            dateOfBirth,
-            martialStatus,
-            nationality,
-            IDNumber,
-            contactNumber,
-            address,
-
-            employeeCode,
-            workingStartDate,
-            probationEndDate,
-            jobTitle,
-            department,
-            employeeType,
-            employeeStatus,
-            manager,
-            resignationDate,
-            resignationReason,
-
-            taxID,
-            accountNO,
-            accountName,
-            compensationType,
-            salary,
-        }
-        await axios.put(`/person/${token.id}`, body)
-        await fetchData();
-        alert('Update completed')
-    }
-
 
     return (
         <div>
-            <PeopleSub name={profile.name} surname={profile.surname} jobTitle={profile.jobTitle}
-                contactNumber={profile.contactNumber} email={profile.email}
+            <PeopleSub
+                name={name} surname={surname} jobTitle={jobTitle}
+                contactNumber={contactNumber} email={email} gender={gender}
+                dateOfBirth={dateOfBirth} martialStatus={martialStatus}
+                nationality={nationality} IDNumber={IDNumber} contactNumber={contactNumber}
+                address={address}
+                
+                employeeCode={employeeCode} workingStartDate={workingStartDate} probationEndDate={probationEndDate}
+                jobTitle={jobTitle} department={department} employeeType={employeeType} employeeStatus={employeeStatus}
+                manager={manager} resignationDate={resignationDate} resignationReason={resignationReason}
+
+                taxID={taxID} accountNO={accountNO} accountName={accountName} compensationType={compensationType}
+                salary={salary} id={props.location.id}
             />
             <div className="General">
                 <div className="sidebarPersonal">
                     <ul>
-                        {/* <Link to="/people/general">
-                            <li className="personalList">General</li>
-                            </Link>
-                            <Link to="/people/Information">
-                            <li className="personalList">Employee info.</li>
-                        </Link> */}
                         <li className="personalList" onClick={generalClick}>General</li>
                         <li className="personalList" onClick={infoClick}>Employee info.</li>
                         <li className="personalList" onClick={compensationClick}>Compensation</li>
-                        <button onClick={sendData}>Save</button>
                     </ul>
                 </div>
                 {general && (
@@ -238,14 +201,14 @@ export default function General() {
                                 <input type="date" value={probationEndDate} onChange={e => setProbationEndDate(e.target.value)}></input>
                             </div>
                             <div id="item5">
-                                <label>Job title</label>
-                                <br />
-                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
-                            </div>
-                            <div id="item6">
                                 <label>Department</label>
                                 <br />
                                 <input value={department} onChange={e => setDepartment(e.target.value)} />
+                            </div>
+                            <div id="item6">
+                                <label>Job title</label>
+                                <br />
+                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
                             </div>
                             <div id="item7">
                                 <label>Employee type</label>

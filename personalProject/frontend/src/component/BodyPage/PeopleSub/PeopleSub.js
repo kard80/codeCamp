@@ -7,11 +7,62 @@ import '../../../style/BodyPage/PeopleSub/PeopleSub.css'
 import axios from '../../../config/axios'
 
 export default function PeopleSub(props) {
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [contactNumber, setContactNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [jobTitle, setJobTitle] = useState('');
+    const [person, setPerson] = useState([])
+    const {
+        name, surname, email, gender, dateOfBirth, martialStatus, nationality, IDNumber, contactNumber, address,
+
+        employeeCode, workingStartDate, probationEndDate, jobTitle, department, employeeType, employeeStatus, manager,
+        resignationDate, resignationReason,
+
+        taxID, accountNO, accountName, compensationType, salary
+    }
+        = props
+
+    const getData = async () => {
+        const result = await axios.get(`/person/${props.id}`);
+        setPerson(result.data)
+        console.log(result.data)
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
+
+    const sendData = async () => {
+        const body = {
+            name,
+            surname,
+            email,
+            gender,
+            dateOfBirth,
+            martialStatus,
+            nationality,
+            IDNumber,
+            contactNumber,
+            address,
+
+            employeeCode,
+            workingStartDate,
+            probationEndDate,
+            jobTitle,
+            department,
+            employeeType,
+            employeeStatus,
+            manager,
+            resignationDate,
+            resignationReason,
+
+            taxID,
+            accountNO,
+            accountName,
+            compensationType,
+            salary,
+        }
+        await axios.put(`/person/${props.id}`, body)
+        await getData();
+        alert('Update completed')
+    }
+
 
     return (
         <div>
@@ -30,12 +81,13 @@ export default function PeopleSub(props) {
                             <div>
                                 <img src="#" />
                                 <div className="name">
-                                    <h1>{`${props.name}`} {true? props.surname: ''}</h1>
-                                    <p>{props.jobTitle}</p>
+                                    <h1>{person.name} {true ? person.surname : ''}</h1>
+                                    <p>{person.jobTitle}</p>
                                 </div>
                             </div>
-                            <p>Tel: {props.contactNumber}</p>
-                            <p>{props.email}</p>
+                            <p>Tel: {person.contactNumber}</p>
+                            <p>{person.email}</p>
+                            <button onClick={sendData}>Save</button>
                         </div>
                     </div>
                 </div>
