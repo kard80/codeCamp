@@ -18,9 +18,9 @@ export default function Sidebar() {
                         </ul> :
                         <ul>
                             <Link to="/People" className="sidebarMain"><li>People</li></Link>
-                            <Link to="/people/admin/Timestamp" className="sidebarMain"><li>Timestamp</li></Link>
-                            <Link to="/Leaves" className="sidebarMain"><li>Leaves</li></Link>
-                            <Link to="/people/admin/department" className="sidebarMain"><li>Department</li></Link>
+                            <Link to="/admin/Timestamp" className="sidebarMain"><li>Timestamp</li></Link>
+                            <Link to="/admin/Leaves" className="sidebarMain"><li>Leaves</li></Link>
+                            <Link to="/admin/department" className="sidebarMain"><li>Department</li></Link>
                         </ul>
                     }
 

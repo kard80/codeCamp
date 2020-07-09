@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../../../style/BodyPage/PeopleSub/General.css'
 import PeopleSub from './PeopleSub'
 import axios from '../../../config/axios';
+import jwtDecode from 'jwt-decode'
 
 export default function General(props) {
     const [name, setName] = useState('');
@@ -32,8 +33,14 @@ export default function General(props) {
     const [compensationType, setCompensationType] = useState('');
     const [salary, setSalary] = useState('');
 
+    const [pullDepartment, setPullDepartment] = useState([])
+    const [pullPosition, setPullPosition] = useState([])
+    const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
+
+
     const fetchData = async () => {
         const result = await axios.get(`/person/${props.location.id}`)
+        const department = await axios.get('/department')
         setName(result.data.name)
         setSurname(result.data.surname)
         setEmail(result.data.email)
@@ -47,8 +54,7 @@ export default function General(props) {
         setEmployeeCode(result.data.employeeCode)
         setWorkingStartDate(result.data.workingStartDate)
         setProbationEndDate(result.data.probationEndDate)
-        setJobTitle(result.data.jobTitle)
-        setDepartment(result.data.department)
+        setPullDepartment(department.data)
         setEmployeeType(result.data.employeeType)
         setEmployeeStatus(result.data.employeeStatus)
         setResignationDate(result.data.resignationDate)
@@ -58,11 +64,26 @@ export default function General(props) {
         setAccountName(result.data.accountName)
         setCompensationType(result.data.compensationType)
         setSalary(result.data.salary)
+        setDepartment(result.data.departmentId)
+        setJobTitle(result.data.positionId)
+        
+        setPullDepartment(department.data)
+        
     }
+
+    const fetchPosition = async () => {
+        const position = await axios.get(`/position/${department}`)
+        setPullPosition(position.data)
+    }
+
     
     useEffect(() => {
         fetchData();
     }, [])
+
+    useEffect(() => {
+        fetchPosition();
+    }, [department])
 
     const [general, setGeneral] = useState(true)
     const [info, setInfo] = useState(false)
@@ -82,6 +103,14 @@ export default function General(props) {
         setGeneral(false);
         setInfo(false);
         setCompensation(true)
+    }
+
+    const whoEdit = (user, admin) => {
+        if(token.role === 'User') {
+            return user? false: true
+        }else {
+            return admin? false: true
+        }
     }
 
 
@@ -119,22 +148,22 @@ export default function General(props) {
                             <div id="item2">
                                 <label>Name</label>
                                 <br />
-                                <input value={name} onChange={e => setName(e.target.value)}></input>
+                                <input disabled={whoEdit(true, true)}  value={name} onChange={e => setName(e.target.value)}></input>
                             </div>
                             <div id="item3">
                                 <label>Surname</label>
                                 <br />
-                                <input value={surname} onChange={e => setSurname(e.target.value)}></input>
+                                <input disabled={whoEdit(true, true)} value={surname} onChange={e => setSurname(e.target.value)}></input>
                             </div>
                             <div id="item4">
                                 <label>E-mail</label>
                                 <br />
-                                <input type="email" value={email} onChange={e => setEmail(e.target.value)}></input>
+                                <input disabled={whoEdit(true, true)} type="email" value={email} onChange={e => setEmail(e.target.value)}></input>
                             </div>
                             <div id="item5">
                                 <label>Gender</label>
                                 <br />
-                                <select value={gender} onChange={e => setGender(e.target.value)}>
+                                <select disabled={whoEdit(false, true)} value={gender} onChange={e => setGender(e.target.value)}>
                                     <option value="">--select--</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -143,12 +172,12 @@ export default function General(props) {
                             <div id="item6">
                                 <label>Date of birth</label>
                                 <br />
-                                <input type="date" value={dateOfBirth} onChange={e => setDateOfBirth(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} type="date" value={dateOfBirth} onChange={e => setDateOfBirth(e.target.value)}></input>
                             </div>
                             <div id="item7">
                                 <label>Martial status</label>
                                 <br />
-                                <select value={martialStatus} onChange={e => setMartialStatus(e.target.value)}>
+                                <select disabled={whoEdit(true, true)} value={martialStatus} onChange={e => setMartialStatus(e.target.value)}>
                                     <option value=''>--select--</option>
                                     <option>Single</option>
                                     <option>Married</option>
@@ -159,22 +188,22 @@ export default function General(props) {
                             <div id="item8">
                                 <label>Nationality</label>
                                 <br />
-                                <input value={nationality} onChange={e => setNationality(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} value={nationality} onChange={e => setNationality(e.target.value)}></input>
                             </div>
                             <div id="item9">
                                 <label>ID number</label>
                                 <br />
-                                <input value={IDNumber} onChange={e => setIDNumber(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} value={IDNumber} onChange={e => setIDNumber(e.target.value)}></input>
                             </div>
                             <div id="item10">
                                 <label>Contact number</label>
                                 <br />
-                                <input value={contactNumber} onChange={e => setContactNumber(e.target.value)}></input>
+                                <input disabled={whoEdit(true, true)} value={contactNumber} onChange={e => setContactNumber(e.target.value)}></input>
                             </div>
                             <div id="item11">
                                 <label>Address</label>
                                 <br />
-                                <input value={address} onChange={e => setAddress(e.target.value)}></input>
+                                <input disabled={whoEdit(true, true)} value={address} onChange={e => setAddress(e.target.value)}></input>
                             </div>
                         </div>
                     </div>
@@ -184,36 +213,47 @@ export default function General(props) {
                         <div className="gridItem">
                             <div id="item1">
                                 <h1>Employee information</h1>
+                                <button onClick={() => console.log(department)}>Console</button>
                             </div>
                             <div id="item2">
                                 <label>Employee code</label>
                                 <br />
-                                <input value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} />
                             </div>
                             <div id="item3">
                                 <label>Working start date</label>
                                 <br />
-                                <input type="date" value={workingStartDate} onChange={e => setWorkingStartDate(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} type="date" value={workingStartDate} onChange={e => setWorkingStartDate(e.target.value)}></input>
                             </div>
                             <div id="item4">
                                 <label>Probation end date</label>
                                 <br />
-                                <input type="date" value={probationEndDate} onChange={e => setProbationEndDate(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} type="date" value={probationEndDate} onChange={e => setProbationEndDate(e.target.value)}></input>
                             </div>
                             <div id="item5">
                                 <label>Department</label>
                                 <br />
-                                <input value={department} onChange={e => setDepartment(e.target.value)} />
+                                <select disabled={whoEdit(false, true)} value={department} onChange={e => setDepartment(e.target.value)}>
+                                    <option>--select--</option>
+                                    {pullDepartment.map(item => (
+                                        <option value={item.id}>{item.department}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div id="item6">
                                 <label>Job title</label>
                                 <br />
-                                <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
+                                <select  disabled={whoEdit(false, true)} value={jobTitle} onChange={e => setJobTitle(e.target.value)}>
+                                    <option>--Select--</option>
+                                    {pullPosition.map(item => (
+                                        <option value={item.id}>{item.position}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div id="item7">
                                 <label>Employee type</label>
                                 <br />
-                                <select value={employeeType} onChange={e => setEmployeeType(e.target.value)} placeholder="select">
+                                <select disabled={whoEdit(false, true)} value={employeeType} onChange={e => setEmployeeType(e.target.value)} placeholder="select">
                                     <option>Permanent</option>
                                     <option>Contact</option>
                                     <option>Part-time</option>
@@ -223,7 +263,7 @@ export default function General(props) {
                             <div id="item8">
                                 <label>Employee status</label>
                                 <br />
-                                <select value={employeeStatus} onChange={e => setEmployeeStatus(e.target.value)}>
+                                <select disabled={whoEdit(false, true)} value={employeeStatus} onChange={e => setEmployeeStatus(e.target.value)}>
                                     <option>Confirmed</option>
                                     <option>Probation</option>
                                     <option>Resigned</option>
@@ -237,21 +277,17 @@ export default function General(props) {
                             <div id="item9">
                                 <label>Manager</label>
                                 <br />
-                                <select value={manager} onChange={e => setManager(e.target.value)}>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
+                                <input disabled={whoEdit(false, true)} type="text" value={manager} onChange={e => setManager(e.target.value)} />
                             </div>
                             <div id="item10">
                                 <label>Resignation date</label>
                                 <br />
-                                <input type="date" value={resignationDate} onChange={e => setResignationDate(e.target.value)}></input>
+                                <input disabled={whoEdit(false, true)} type="date" value={resignationDate} onChange={e => setResignationDate(e.target.value)}></input>
                             </div>
                             <div id="item11">
                                 <label>Resignation reason</label>
                                 <br />
-                                <input value={resignationReason} onChange={e => setResignationReason(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={resignationReason} onChange={e => setResignationReason(e.target.value)} />
                             </div>
                         </div>
                     </div>
@@ -265,27 +301,27 @@ export default function General(props) {
                             <div id="item2">
                                 <label>Tax ID</label>
                                 <br />
-                                <input value={taxID} onChange={e => setTaxID(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={taxID} onChange={e => setTaxID(e.target.value)} />
                             </div>
                             <div id="item3">
                                 <label>Account No.</label>
                                 <br />
-                                <input value={accountNO} onChange={e => setAccountNO(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={accountNO} onChange={e => setAccountNO(e.target.value)} />
                             </div>
                             <div id="item4">
                                 <label>Account name</label>
                                 <br />
-                                <input value={accountName} onChange={e => setAccountName(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={accountName} onChange={e => setAccountName(e.target.value)} />
                             </div>
                             <div id="item5">
                                 <label>Compensation type</label>
                                 <br />
-                                <input value={compensationType} onChange={e => setCompensationType(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={compensationType} onChange={e => setCompensationType(e.target.value)} />
                             </div>
                             <div id="item6">
                                 <label>Salary</label>
                                 <br />
-                                <input value={salary} onChange={e => setSalary(e.target.value)} />
+                                <input disabled={whoEdit(false, true)} value={salary} onChange={e => setSalary(e.target.value)} />
                             </div>
                         </div>
                     </div>

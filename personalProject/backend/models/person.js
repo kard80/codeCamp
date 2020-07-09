@@ -40,9 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         probationEndDate: {
             type: DataTypes.DATE
         },
-        jobTitle: {
-            type: DataTypes.STRING
-        },
         employeeType: {
             type: DataTypes.STRING
         },
@@ -68,6 +65,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         },
         salary: {
+            type: DataTypes.STRING
+        },
+        picture: {
             type: DataTypes.STRING
         }
     })

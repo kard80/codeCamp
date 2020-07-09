@@ -1,12 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../BodyPage/NavbarBody'
 import Sidebar from '../BodyPage/Sidebar'
 import {Link} from 'react-router-dom'
 import '../../style/AdminPage/Department.css'
+import axios from '../../config/axios'
 
 export default function Department() {
     const [create, setCreate] = useState(false)
-    const [department, setDepartment] = useState(false)
+    const [position, setPosition] = useState([])
+    const [select, setSelect] = useState('select')
+
+    const fetchData = async () => {
+        const position = await axios.get('/position')
+        setPosition(position.data)
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     return (
         <div>
@@ -14,10 +25,13 @@ export default function Department() {
             <Sidebar />
             <div className="department">
                 <div className="headTable">
-                    <select>
-                        <option>--Select--</option>
+                    <select value={select} onChange={e => setSelect(e.target.value)}>
+                        <option value="select">--Select--</option>
+                        {position.map(item => (
+                        <option value={item.department.department}>{item.department.department}</option>
+                        ))}
                     </select>
-                    <Link to="/people/admin/CreateDepartment"><button>Create</button></Link>
+                    <Link to="/admin/CreateDepartment"><button>Create</button></Link>
                 </div>
                 <div className="head">
                     <table>
@@ -25,14 +39,22 @@ export default function Department() {
                             <th>Department</th>
                             <th>Job Position</th>
                             <th>Employee</th>
-                            <th>Status</th>
                         </tr>
-                        <tr>
-                            <td>Human resource</td>
-                            <td>Recruiter</td>
-                            <td>13</td>
-                            <td>Active</td>
-                        </tr>
+                        {position.map(item => (
+                            select === 'select'?
+                            <tr>
+                                <td>{item.department.department}</td>
+                                <td>{item.position}</td>
+                                <td>{item.people.length}</td>
+                            </tr>:
+                            select === item.department.department?
+                            <tr>
+                                <td>{item.department.department}</td>
+                                <td>{item.position}</td>
+                                <td>{item.people.length}</td>
+                            </tr>:
+                            null
+                        ))}
                     </table>
                 </div>
             </div>

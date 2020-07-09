@@ -27,7 +27,7 @@ export default function Login(props) {
             if (token.role === 'User') {
                 return <Redirect to="/People" />
             } else {
-                return <Redirect to="/people/admin" />
+                return <Redirect to="/admin" />
             }
         }
     }

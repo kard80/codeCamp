@@ -67,3 +67,13 @@
     margin-top: 20px;
     box-shadow: 0 4px 4px;
 }
+
+.profile .button {
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: #7FEB14;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}

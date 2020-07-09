@@ -44,13 +44,17 @@ export default function People() {
                         {person.map(item => (
                             <tr>
                                 <td><Link to={{ pathname: "/people/general", id: item.id, }}>{item.name} {item.surname}</Link></td>
-                                <td>{item.jobTitle}</td>
                                 <td>{
-                                    typeof(item.departmentId) !== 'object'?
-                                    item.department.department:
-                                    ''
+                                    typeof (item.positionId) !== 'object' ?
+                                        item.position.position :
+                                        ''
                                 }</td>
-                                <td>{item.status}</td>
+                                <td>{
+                                    typeof (item.departmentId) !== 'object' ?
+                                        item.department.department :
+                                        ''
+                                }</td>
+                                <td>{item.employeeStatus}</td>
                             </tr>
                         ))}
                     </table>

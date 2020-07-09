@@ -87,7 +87,7 @@ export default function PeopleSub(props) {
                             </div>
                             <p>Tel: {person.contactNumber}</p>
                             <p>{person.email}</p>
-                            <button onClick={sendData}>Save</button>
+                            <button className="button" onClick={sendData}>Save</button>
                         </div>
                     </div>
                 </div>

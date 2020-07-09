@@ -8,7 +8,7 @@ export default function CreateDepartment() {
     const [department, setDepartment] = useState([])
     const [position, setPosition] = useState([])
     const [addDepartment, setAddDepartment] = useState('')
-    const [select, setSelect] = useState('')
+    const [select, setSelect] = useState('department')
     const [isUpdated, setIsUpdated] = useState(false)
 
     const [departmentId, setDepartmentId] = useState('1')
@@ -18,11 +18,6 @@ export default function CreateDepartment() {
     const [personId, setPersonId] = useState('1')
     const [positionId, setPositionId] = useState('1')
 
-    const [inputStyle, setInputStyle] = useState({})
-
-    const inputStyleFnc = () => {
-        return {color: 'red'}
-    }
     const fetchDepartmentData = async () => {
         const department = await axios.get('/department')
         setDepartment(department.data)
@@ -44,6 +39,7 @@ export default function CreateDepartment() {
         alert('Update completed')
         setAddDepartment('')
         setIsUpdated(!isUpdated)
+        console.log(isUpdated)
     }
 
     const sendPositionData = async () => {
@@ -55,6 +51,8 @@ export default function CreateDepartment() {
         alert('update completed')
         setPositionText('')
         setDepartmentId('1')
+        setIsUpdated(!isUpdated)
+        console.log(isUpdated)
     }
 
     const syncPersonPosition = async () => {
@@ -65,6 +63,8 @@ export default function CreateDepartment() {
 
         await axios.put('/person/syncPosition', body)
         alert('Updated complete')
+        setIsUpdated(!isUpdated)
+        console.log(isUpdated)
     }
 
     useEffect(() => {

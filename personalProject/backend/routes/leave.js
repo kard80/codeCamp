@@ -4,7 +4,12 @@ const db = require('../models');
 
 
 router.get('/', async (req, res) => {
-    const leave = await db.leave.findAll();
+    const leave = await db.leave.findAll({
+        include: [{
+            model: db.person,
+            attributes: ['name', 'surname']
+        }]
+    });
     res.status(200).send(leave)
 })
 
