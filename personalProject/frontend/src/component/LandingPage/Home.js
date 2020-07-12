@@ -1,8 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Col, Row } from 'antd'
 import '../../style/LandingPage/Home.css'
 
 export default function Home() {
+    useEffect(() => {
+        let loadTime = new Date();
+        let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime))
+        let refreshTime = loadTime.getTime() - unloadTime.getTime();
+        if(refreshTime > 3000) {
+            window.localStorage.removeItem('ACCESS_TOKEN')
+        }
+    }, [])
     return (
         <div>
             <Row className="home">

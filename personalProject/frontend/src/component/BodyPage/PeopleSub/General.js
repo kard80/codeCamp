@@ -213,7 +213,6 @@ export default function General(props) {
                         <div className="gridItem">
                             <div id="item1">
                                 <h1>Employee information</h1>
-                                <button onClick={() => console.log(department)}>Console</button>
                             </div>
                             <div id="item2">
                                 <label>Employee code</label>

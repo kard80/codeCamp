@@ -35,6 +35,10 @@
     cursor: pointer
 }
 
+.navList a {
+    color: white;
+}
+
 .navList button {
     color: black;
     border-radius: 3px;

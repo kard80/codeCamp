@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const multer = require('multer')
 const auth = require('../config/authorize')
 
 router.get('/', async (req, res) => {
@@ -96,48 +97,29 @@ router.put('/syncPosition', async (req, res) => {
     res.status(200).send('Update completed')
 })
 
-router.put('/:id', (req, res) => {
-    const id = req.params.id
-    const name = req.body.name;
-    const surname = req.body.surname;
-    const email = req.body.email;
-    const gender = req.body.gender;
-    const dateOfBirth = req.body.dateOfBirth;
-    const martialStatus = req.body.martialStatus;
-    const nationality = req.body.nationality;
-    const IDNumber = req.body.IDNumber;
-    const contactNumber = req.body.contactNumber;
-    const address = req.body.address;
-    const employeeCode = req.body.employeeCode;
-    const workingStartDate = req.body.workingStartDate;
-    const probationEndDate = req.body.probationEndDate;
-    const jobTitle = req.body.jobTitle;
-    const department = req.body.department;
-    const employeeType = req.body.employeeType;
-    const employeeStatus = req.body.employeeStatus;
-    const manager = req.body.manager;
-    const resignationDate = req.body.resignationDate;
-    const resignationReason = req.body.resignationReason;
-    const taxID = req.body.taxID;
-    const accountNO = req.body.accountNO;
-    const accountName = req.body.accountName;
-    const compensationType = req.body.compensationType;
-    const salary = req.body.salary;
+
+const storage = multer.diskStorage({
+    destination: (req, res, next) => {
+        next(null, '../frontend/src/upload/')
+    },
+    filename: (req, res, next) => {
+        // next(null, Date.now() + filename.originalname)
+        next(null, Date.now() + '.png')
+    }
+})
+
+
+router.put('/:id', async (req, res) => {
+    const id = req.params.id;
+    const {
+        name, surname, email, gender, dateOfBirth, martialStatus, nationality, IDNumber, contactNumber, address,
+        employeeCode, workingStartDate, probationEndDate, jobTitle, department, employeeType, employeeStatus, manager,
+        resignationDate, resignationReason, taxID, accountNO, accountName, compensationType, salary
+    } = req.body
     
-    db.person.update({ 
-        name,
-        surname,
-        email,
-        gender,
-        dateOfBirth,
-        martialStatus,
-        nationality,
-        IDNumber,
-        contactNumber,
-        address,
-        employeeCode,
-        workingStartDate,
-        probationEndDate,
+    await db.person.update({ 
+        name, surname, email, gender, dateOfBirth, martialStatus, nationality, IDNumber, contactNumber, address,
+        employeeCode, workingStartDate, probationEndDate,
         positionId: jobTitle,
         departmentId: department,
         employeeType,
@@ -158,6 +140,40 @@ router.put('/:id', (req, res) => {
         })
 })
 
+router.put('/withPicture/:id', multer({storage,}).single('file'), (req, res) => {
+    const picture = req.file.filename
+    const id = req.params.id;
+    const {
+        name, surname, email, gender, dateOfBirth, martialStatus, nationality, IDNumber, contactNumber, address,
+        employeeCode, workingStartDate, probationEndDate, jobTitle, department, employeeType, employeeStatus, manager,
+        resignationDate, resignationReason, taxID, accountNO, accountName, compensationType, salary
+    } = req.body
+    
+    db.person.update({ 
+        name, surname, email, gender, dateOfBirth, martialStatus, nationality, IDNumber, contactNumber, address,
+        employeeCode, workingStartDate, probationEndDate,
+        positionId: jobTitle,
+        departmentId: department,
+        employeeType,
+        employeeStatus,
+        manager,
+        resignationDate,
+        resignationReason,
+        taxID,
+        accountNO,
+        accountName,
+        compensationType,
+        salary,
+        picture
+     }, { where: { id: id } })
+        .then(result => {
+            res.status(200).send(req.file)
+        }).catch(err => {
+            res.status(400).send(err)
+        })
+})
+
+
 router.delete('/:id', (req, res) => {
     const id = req.params.id;
     db.person.destroy({ where: { id: id } })
@@ -168,9 +184,5 @@ router.delete('/:id', (req, res) => {
     })
 
 })
-
-
-
-
 
 module.exports = router;

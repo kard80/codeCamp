@@ -9,7 +9,6 @@ const option = {
 }
 
 passport.use(
-    'jwt',
     new JWTStrategy(option, async(payload, done) => {
     const user = await db.user.findOne({where : {id: payload.id}})
 

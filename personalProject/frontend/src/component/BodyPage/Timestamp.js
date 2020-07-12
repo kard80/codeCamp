@@ -14,7 +14,7 @@ export default function Timestamp() {
     const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const fetchData = async () => {
-        const result = await axios.get(`/timeAttendance/${token.id}`);
+        const result = await axios.get(`/timeAttendance/${token.id}`,{headers: {Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE1OTQ1NTY5NzEsImV4cCI6MTU5NDU2MDU3MX0.Ng29XZ55sIaqfDhjgcLRW1-sTs5GSmfBnvx6bPh67VQ`}});
         setTimeAttendance(result.data)
     }
 
@@ -64,8 +64,8 @@ export default function Timestamp() {
         const body = {
             personId: token.id
         }
+        await axios.post('/timeAttendance', body, {headers: {Authorization: `Bearer ${token}`}})
         alert('Clock-in completed')
-        await axios.post('/timeAttendance', body)
         fetchData();
     }
 
@@ -78,7 +78,7 @@ export default function Timestamp() {
             remark,
             personId: token.id,
         }
-        await axios.put('/timeAttendance', body)
+        await axios.put('/timeAttendance', body, {headers: {Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE1OTQ1NTY5NzEsImV4cCI6MTU5NDU2MDU3MX0.Ng29XZ55sIaqfDhjgcLRW1-sTs5GSmfBnvx6bPh67VQ`}})
         fetchData();
     }
 

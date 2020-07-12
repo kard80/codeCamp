@@ -9,7 +9,6 @@ export default function Login(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(false);
-    // const token = jwtDecode(localStorage.getItem('ACCESS_TOKEN'))
 
     const loginFnc = async () => {
         const body = {

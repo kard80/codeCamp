@@ -33,9 +33,9 @@ export default function CreateDepartment() {
         setPerson(person.data)
     }
 
-    const sendDepartmentData = () => {
+    const sendDepartmentData = async () => {
         const addDepartmentBody = { department: addDepartment }
-        axios.post('/department', addDepartmentBody)
+        await axios.post('/department', addDepartmentBody)
         alert('Update completed')
         setAddDepartment('')
         setIsUpdated(!isUpdated)

@@ -2,23 +2,24 @@ const jwt = require('jsonwebtoken')
 
 const auth = ((req, res, next) => {
     const auth = req.headers['authorization']
+    const privateKey = 'myPersonalProject'
     if(auth === undefined) return res.status(401).json({
         "status": 401,
-        "message": "Unauthorized"
+        "message": "Do not have headers"
     })
 
-    const token = req.headers['authorization'].split(' ')[1]
+    const token = req.headers['authorization'].split('.')[1]
     if(token === undefined) return res.status(401).json({
         "status": 401,
-        "message": "Unauthorized"
+        "message": "token is invalid"
     })
 
-    const privateKey = 'myPersonalProject'
     jwt.verify(token, privateKey, function(error, decoded) {
         if(error) return res.status(401).json({
             "status": 401,
-            "message": "Unauthorized"
+            "message": 'Unauthorize'
         })
+
         console.log(error)
         console.log(decoded)
 
