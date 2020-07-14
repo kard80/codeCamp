@@ -8,7 +8,7 @@ export default function Feature() {
             <div className="subFeature">
                 <Row justify="center" align="middle" className="headFeature">
                     <Col>
-                        <h1> Feature</h1>
+                        <h1> FEATURE</h1>
                     </Col>
                 </Row>
                 <Row className="cardContainer" justify="space-between" align="middle">
@@ -19,7 +19,10 @@ export default function Feature() {
                                 <p>Person</p>
                             </div>
                             <div className="flip-card-back">
-                                <p>flip back already</p>
+                                <ul>
+                                    <li>Collect employee's data</li>
+                                    <li>Convenience editing</li>
+                                </ul>
                             </div>
                         </Col>
                     </div>
@@ -30,7 +33,10 @@ export default function Feature() {
                                 <p>Holiday</p>
                             </div>
                             <div className="flip-card-back">
-                                <p>Flip back already</p>
+                                <ul>
+                                    <li>Summary of Leave</li>
+                                    <li>Leave form within website</li>
+                                </ul>
                             </div>
                         </Col>
                     </div>
@@ -41,7 +47,10 @@ export default function Feature() {
                                 <p>Time stamp</p>
                             </div>
                             <div className="flip-card-back">
-                                <p>Flip back already</p>
+                                <ul>
+                                    <li>Summative view feature</li>
+                                    <li>Clock-In with yourself</li>
+                                </ul>
                             </div>
                         </Col>
                     </div>

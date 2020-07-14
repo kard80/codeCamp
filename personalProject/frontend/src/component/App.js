@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Switch, Route, BrowserRouter, Link } from 'react-router-dom'
+import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom'
 import LandingPage from './LandingPage/LandingPage'
 import Register from './LandingPage/Register'
 import Login from './LandingPage/Login'
@@ -39,12 +39,7 @@ function App() {
           <Route exact path="/admin/Timestamp" component={TimestampAdmin} />
           <Route exact path="/admin/CreateDepartment" component={CreateDepartment} />
           <Route exact path="/admin/Leaves" component={LeavesAdmin} />
-          <ul>
-            <li><Link to="/home">Homepage</Link></li>
-            <li><Link to="/SuperHr">Body</Link></li>
-            <li><Link to="/home/login">login</Link></li>
-            <li><Link to="/people/general">People_general</Link></li>
-          </ul>
+          <Redirect to="/home" />
         </Switch>
       </BrowserRouter>
       
